@@ -1,0 +1,153 @@
+:internal:
+= Go Lang Starter
+:toc: left
+:author: Jonny
+:revnumber!: 1.0.0
+:revdate: Sunday, 25 July, 2021
+:doctype:   article
+:encoding:  utf-8
+:lang:      en
+:toc:       left
+:toclevels: 20
+:toc-title: Table of Content
+:sectnums:
+:last-update-label:
+:nofooter!:
+:media: print
+:icons: font
+:pagenums:
+:imagesdir: images/
+:numbered:
+:toc: left
+:xrefstyle: full
+
+== Install Go
+
+Install go by following from Go
+
+set Environment
+
+    #GOLANG
+    export GOROOT=/usr/local/go
+    export PATH=$PATH:$GOROOT/bin
+
+    #OUR WORKSPACE
+    export GOPATH=$HOME/go/code
+    export PATH=$PATH:$GOPATH/bin
+
+== Intelij Install Plugins
+
+    go
+
+    go template
+
+Setting
+
+image:1.jpeg[]
+
+image:2.jpeg[]
+
+image:3.jpeg[]
+
+New Project
+
+    go mod init
+
+    go mod tidy
+
+
+== Chapter 1 Chat Application with Web Sockets
+
+- Use the net/http package to serve HTTP requests
+- Deliver template-driven content to users' browsers
+- Satisfy a Go interface to build our own http.Handler types
+- Use Go's goroutines to allow an application to perform multiple tasks concurrently
+- Use channels to share information between running Go routines
+- Upgrade HTTP requests to use modern features such as web sockets
+- Add tracing to the application to better understand its inner workings
+- Write a complete Go package using test-driven development practices
+- Return unexported types through exported interfaces
+
+== Chapter 2.  Adding User Accounts
+
+- Use the decorator pattern to wrap http.Handler types in order to add additional functionality to handlers
+- Serve HTTP endpoints with dynamic paths
+- Use the gomniauth open source project to access authentication services
+- Get and set cookies using the http package
+- Encode objects as Base64 and back to normal again
+- Send and receive JSON data over a web socket
+- Give different types of data to templates
+- Work with the channels of your own types
+
+image:4.jpeg[]
+
+
+== Hosted bootstrap to your project code :
+
+    http.Handle("/assets/", http.StripPrefix("/assets",    http.FileServer(http.Dir("/path/to/assets/"))))
+
+    Notice how the http.StripPrefix and http.FileServer functions return objects that satisfy the http.Handler interface as per the decorator pattern that we implement with our MustAuth helper function.
+
+
+== Getting started with OAuth2
+OAuth2 is an open authorization standard designed to allow resource owners to give clients delegated access to private data (such as wall posts or tweets) via an access token exchange handshake. Even if you do not wish to access the private data, OAuth2 is a great option that allows people to sign in using their existing credentials, without exposing those credentials to a third-party site. In this case, we are the third party, and we want to allow our users to sign in using services that support OAuth2.
+
+From a user's point of view, the OAuth2 flow is as follows:
+
+- The user selects the provider with whom they wish to sign in to the client app.
+- The user is redirected to the provider's website (with a URL that includes the client app ID) where they are asked to give permission to the client app.
+- The user signs in from the OAuth2 service provider and accepts the permissions requested by the third-party application.
+- The user is redirected to the client app with a request code.
+- In the background, the client app sends the grant code to the provider, who sends back an authentication token.
+- The client app uses the access token to make authorized requests to the provider, such as to get user information or wall posts.
+
+To avoid reinventing the wheel, we will look at a few open source projects that have already solved this problem for us.
+
+     we will use gomniauth to access OAuth services provided by Google, Facebook, and GitHub, so make sure you have it installed by running the following command
+
+     go get github.com/stretchr/gomniauth
+
+
+== Tell the authorization providers about your app
+
+- Before we ask an authorization provider to help our users sign in,
+- we must tell them about our application. M
+- ost providers have some kind of web tool or console where you can create applications to kick this process off.
+- Here's one from Google:
+
+In order to identify the client application, we need to create a client ID and secret. Despite the fact that OAuth2 is an open standard, each provider has their own language and mechanism to set things up. Therefore, you will most likely have to play around with the user interface or the documentation to figure it out in each case.
+
+At the time of writing, in *Google Cloud Console*, you navigate to *API Manager* and click on the *Credentials* section.
+
+
+
+1. At Credential select Google ADD API KEY
+
+    AIzaSyBFl-aDBbsmx9lGDwdfFsrVAccSYgrEjiE
+
+
+2. Add Oauth2 select ouath2
+  select web app
+
+image:5.jpeg[]
+
+3. save the client id and secret
+
+CLient ID
+
+    14378472304-oaeg1d6hs32nsk6h1av23mb9hopgsldj.apps.googleusercontent.com
+
+Secret
+
+   MucNovJBH6e5sdMfBC9myteU
+
+
+
+The *GetBeginAuthURL(nil, nil)* arguments are for the state and options respectively, which we are not going to use for our chat application.
+
+The first argument is a state map of data that is encoded and signed and sent to the authentication provider. The provider doesn't do anything with the state; it just sends it back to our callback endpoint. This is useful if, for example, we want to redirect the user back to the original page they were trying to access before the authentication process intervened. For our purpose, we have only the /chat endpoint, so we don't need to worry about sending any state.
+
+The second argument is a map of additional options that will be sent to the authentication provider, which somehow modifies the behavior of the authentication process. For example, you can specify your own scope parameter, which allows you to make a request for permission to access additional information from the provider. For more information about the available options, search for OAuth2 on the Internet or read the documentation for each provider, as these values differ from service to service.
+
+
+    We will continue to stop, rebuild, and run our projects manually throughout this book, but there are some tools that will take care of this for you by watching for changes and restarting Go applications automatically. If you're interested in such tools, check out https://github.com/pilu/fresh and https://github.com/codegangsta/gin.

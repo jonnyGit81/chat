@@ -1,0 +1,75 @@
+<!-- Format Code : Alt+Shift+Command+L -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+    <style>
+        input {
+            display: block;
+        }
+
+        ul {
+            list-style: none;
+        }
+    </style>
+</head>
+<body>
+<ul id="messages"></ul>
+<form id="chatbox">
+    {{.UserData.name}}:<br/>
+    <textarea></textarea>
+    <input type="submit" value="Send"/>
+</form>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+    $(function () {
+        var socket = null;
+        var msgBox = $("#chatbox textarea");
+        var messages = $("#messages");
+        $("#chatbox").submit(function () {
+            if (!msgBox.val()) return false;
+            if (!socket) {
+                alert("Error: There is no socket connection.");
+                return false;
+            }
+
+            // We are using JSON.stringify to serialize the specified JSON object
+            // (containing just the Message field) into a string, which is then sent to the server.
+            // Our Go code will decode (or unmarshal) the JSON string into a message object,
+            // matching the field names from the client JSON object with those of our message type.
+            socket.send(JSON.stringify({"Message": msgBox.val()}));
+            msgBox.val("");
+            console.log(msgBox.val())
+            return false;
+        });
+        if (!window["WebSocket"]) {
+            alert("Error: Your browser does not support web sockets.")
+        } else {
+            /*
+                The double curly braces represent an annotation and the way we tell our template source to inject data.
+                The {{.Host}} is essentially equivalent of telling it to replace the annotation with the value from request.Host
+                (since we passed the request r object in as data).
+             */
+            socket = new WebSocket("ws://{{.Host}}/room");
+            socket.onclose = function () {
+                alert("Connection has been closed.");
+            }
+            socket.onmessage = function (e) {
+                var msg = JSON.parse(e.data);
+
+                console.log('Server: ' + e.data);
+
+                messages.append(
+                    $("<li>").append(
+                        $("<strong>").text(msg.Name + ": "),
+                        $("<span>").text(msg.Message)
+                    )
+                );
+            }
+        }
+    });
+</script>
+</body>
+</html>
