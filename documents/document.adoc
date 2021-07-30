@@ -151,3 +151,35 @@ The second argument is a map of additional options that will be sent to the auth
 
 
     We will continue to stop, rebuild, and run our projects manually throughout this book, but there are some tools that will take care of this for you by watching for changes and restarting Go applications automatically. If you're interested in such tools, check out https://github.com/pilu/fresh and https://github.com/codegangsta/gin.
+
+== Chapter 3. Three Ways to Implement Profile Pictures
+
+- What the good practices to get additional information from auth services are, even when there are no standards in place
+- When it is appropriate to build abstractions into our code
+- How Go's zero-initialization pattern can save time and memory
+- How reusing an interface allows us to work with collections and individual objects in the same way as the existing interface did
+- How to use the https://en.gravatar.com/ web service
+- How to do MD5 hashing in Go
+- How to upload files over HTTP and store them on a server
+- How to serve static files through a Go web server
+- How to use unit tests to guide the refactoring of code
+- How and when to abstract functionality from struct types into interfaces
+
+
+*Cool Stuff*
+
+    r := newRoom(UseAuthAvatar)
+
+Thinking about code readability is important when designing interfaces. Consider a method that takes a Boolean input just passing in true or false hides the real meaning if you don't know the argument names. Consider defining a couple of helper constants, as shown in the following short example:
+
+    func move(animated bool) { /* ... */ }
+    const Animate = true const
+    DontAnimate = false
+
+Think about which of the following calls to move are easier to understand:
+
+    move(true)
+    move(false)
+    move(Animate)
+    move(DontAnimate)
+

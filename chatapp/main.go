@@ -19,9 +19,9 @@ import (
 //  compile the template once (using the sync.Once type),
 //  keep the reference to the compiled template, and then respond to HTTP requests.
 type templateHandler struct {
-	once sync.Once
+	once     sync.Once
 	filename string
-	templ *template.Template
+	templ    *template.Template
 }
 
 // The sync.Once type guarantees that the function we pass as an argument will only be executed once,
@@ -66,11 +66,10 @@ func main() {
 	// The call to flag.String returns a type of *string,
 	// which is to say it returns the address of a string variable where the value of the flag is stored.
 	// To get the value itself (and not the address of the value), we must use the pointer indirection operator, *.
-	var addr  = flag.String("addr", ":8080", "The addr host of the application." )
+	var addr = flag.String("addr", ":8080", "The addr host of the application.")
 	// We must call flag.Parse() that parses the arguments and extracts the appropriate information.
 	// Then, we can reference the value of the host flag by using *addr
 	flag.Parse()
-
 
 	// Oauth2
 	//Gomniauth requires the SetSecurityKey call because it sends state data between the client and server along with a signature checksum, which ensures that the state values are not tempered with while being transmitted. The security key is used when creating the hash in a way that it is almost impossible to recreate the same hash without knowing the exact security key. You should replace some long key with a security hash or phrase of your choice.
@@ -84,7 +83,6 @@ func main() {
 			"http://localhost:8080/auth/callback/google"),
 	)
 
-
 	// controller
 	chatHtmlTemplate := templateHandler{filename: "chat.html"}
 
@@ -92,10 +90,8 @@ func main() {
 	// the ServeHTTP on authHandle will get executed first
 	http.Handle("/chat", MustAuth(&chatHtmlTemplate))
 
-
 	// login controller
 	http.Handle("/login", &templateHandler{filename: "login.html"})
-
 
 	// in go if you end with / it become a prefix to accept, example
 	// --> /auth/login/google
@@ -106,8 +102,34 @@ func main() {
 	// go allowed this. why we do this because we don't need it to store any state.
 	http.HandleFunc("/auth/", loginHandler)
 
+	// The preceding handler function uses http.SetCookie to update the cookie setting MaxAge to -1,
+	// which indicates that it should be deleted immediately by the browser.
+	// Not all browsers are forced to delete the cookie,
+	// which is why we also provide a new Value setting of an empty string,
+	// thus removing the user data that would previously have been stored.
+	http.HandleFunc("/logout", func(w http.ResponseWriter, r *http.Request) {
+		http.SetCookie(w, &http.Cookie{
+			Name:   "auth",
+			Value:  "",
+			Path:   "/",
+			MaxAge: -1,
+		})
+		w.Header().Set("Location", "/chat")
+		w.WriteHeader(http.StatusTemporaryRedirect)
+	})
+
 	// room controller
-	r := newRoom()
+	// We didn't have to create an instance of AuthAvatar, so no memory was allocated. In our case,
+	// this doesn't result in great saving (since we only have one room for our entire application),
+	// but imagine the size of the potential savings if our application has thousands of rooms.
+	// The way we named the UseAuthAvatar variable means that the preceding code is very easy
+	// to read and it also makes our intention obvious.
+
+	//r := newRoom(UseAuthAvatar)
+
+	// Or we want to use Gravatar instead
+	r := newRoom(UseGravatar)
+
 	// if user dont want to use any tracer
 	//r.trace = trace.New(os.Stdout)
 

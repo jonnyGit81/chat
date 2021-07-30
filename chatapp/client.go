@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gorilla/websocket"
 	"time"
 )
@@ -21,7 +22,6 @@ type client struct {
 	userData map[string]interface{}
 }
 
-
 // The read method allows our client to read from the socket via the ReadMessage method,
 // continually sending any received messages to the forward channel on the room type.
 // If it encounters an error (such as 'the socket has died'),
@@ -35,6 +35,21 @@ func (c *client) read() {
 		}
 		msg.When = time.Now()
 		msg.Name = c.userData["name"].(string)
+
+		// Instead of get directly from client we created a Avatar Interface
+		// if avatarUrl, ok := c.userData["avatar_url"] ; ok {
+		//	msg.AvatarURL = avatarUrl.(string)
+		// }
+
+		// room have avatar, we passing in nil struct, go allowed to call method from nil object,
+		// then we passing in avatar.GetAvatarURL(c), which is extract avatar url from client.
+		// so it make us easy to make a test case right? isn't it?
+		// cool stuff. also we can have another implementation to get from Gravatar instead of user gmail avatar.
+		// NICE
+		msg.AvatarURL, _ = c.room.avatar.GetAvatarURL(c)
+
+		fmt.Println("c", *c)
+
 		c.room.forward <- msg
 
 		//if _, msg, err := c.socket.ReadMessage(); err == nil {
@@ -56,7 +71,7 @@ func (c *client) write() {
 		err := c.socket.WriteJSON(msg)
 
 		if err != nil {
-			break;
+			break
 		}
 
 		//if err := c.socket.WriteMessage(websocket.TextMessage, msg); err != nil {
@@ -66,5 +81,3 @@ func (c *client) write() {
 	}
 	c.socket.Close()
 }
-
-

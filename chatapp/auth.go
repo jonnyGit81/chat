@@ -13,9 +13,9 @@ type authHandler struct {
 }
 
 func (h *authHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	_, err := r.Cookie("auth")
+	cookie, err := r.Cookie("auth")
 
-	if err == http.ErrNoCookie {
+	if err == http.ErrNoCookie || cookie.Value == "" {
 		// not authenticated
 		w.Header().Set("Location", "/login")
 		w.WriteHeader(http.StatusTemporaryRedirect)
@@ -34,10 +34,9 @@ func (h *authHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 // is is decorator patter, we wrap the handler object anc chain it to next.
 // called by main.go on route / to execute this ServeHTTP and then if success return to the ServeHTTP on the wrapped object
-func MustAuth(handler http.Handler)  http.Handler  {
+func MustAuth(handler http.Handler) http.Handler {
 	return &authHandler{next: handler}
 }
-
 
 // loginHandler handles the third-party login process.
 // format: /auth/{action}/{provider}
@@ -64,14 +63,14 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 
 		provider, err := gomniauth.Provider(provider)
 		if err != nil {
-			http.Error(w, fmt.Sprintf("Error when trying to get provider %s: %s",provider, err),
+			http.Error(w, fmt.Sprintf("Error when trying to get provider %s: %s", provider, err),
 				http.StatusBadRequest)
 			return
 		}
 
 		loginUrl, err := provider.GetBeginAuthURL(nil, nil)
 		if err != nil {
-			http.Error(w, fmt.Sprintf("Error when trying to GetBeginAuthURL for %s:%s",provider, err),
+			http.Error(w, fmt.Sprintf("Error when trying to GetBeginAuthURL for %s:%s", provider, err),
 				http.StatusInternalServerError)
 			return
 		}
@@ -102,14 +101,20 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		fmt.Println("usr", usr)
+
+		fmt.Println("avatar", usr.AvatarURL())
+
 		authCookieValue := objx.New(map[string]interface{}{
-			"name": usr.Name(),
+			"name":       usr.Name(),
+			"avatar_url": usr.AvatarURL(),
+			"email":      usr.Email(),
 		}).MustBase64()
 
 		http.SetCookie(w, &http.Cookie{
-			Name: "auth",
+			Name:  "auth",
 			Value: authCookieValue,
-			Path: "/",
+			Path:  "/",
 		})
 
 		w.Header().Set("Location", "/chat")

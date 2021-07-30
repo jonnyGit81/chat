@@ -8,16 +8,13 @@ import (
 	"net/http"
 )
 
-
 const (
 	socketBufferSize  = 1024
 	messageBufferSize = 256
 )
 
 // to upgrade HTTP Connection as Web Socket
-var upgrader = &websocket.Upgrader{ReadBufferSize: socketBufferSize, WriteBufferSize:socketBufferSize}
-
-
+var upgrader = &websocket.Upgrader{ReadBufferSize: socketBufferSize, WriteBufferSize: socketBufferSize}
 
 // We need a way for clients to join and leave rooms in order to ensure that the c.room.forward <- msg code
 // in the preceding section actually forwards the message to all the clients.
@@ -46,21 +43,9 @@ type room struct {
 
 	//for loging trace
 	tracer trace.Tracer
-}
 
-
-// Factory function
-func newRoom() *room {
-	r := room {
-		//we change to message struct
-		//forward: make(chan []byte),
-		forward: make(chan *message),
-		join:    make(chan *client),
-		leave:   make(chan *client),
-		clients: make(map[*client]bool),
-		tracer: trace.Off(),
-	}
-	return &r
+	// avatar is how avatar information will be obtained.
+	avatar Avatar
 }
 
 // Concurrency programming using idiomatic Go
@@ -73,14 +58,14 @@ leave, and forward. If a message is received on any of those channels,
 the select statement will run the code for that particular case.
 It is important to remember that it will only run one block of case code at a time.
 This is how we are able to synchronize to ensure that our r.clients map is only ever modified by one thing at a time.
- */
-func (r *room) run()  {
-	for  {
+*/
+func (r *room) run() {
+	for {
 		select {
 		case clientJoin := <-r.join:
 			//joining room
 			r.clients[clientJoin] = true
-			r.tracer.Trace("User joining room <-r.join", clientJoin.userData["name"].(string) )
+			r.tracer.Trace("User joining room <-r.join", clientJoin.userData["name"].(string))
 			//fmt.Println("User joining room <-r.join")
 		case clientLeave := <-r.leave:
 			//leaving room
@@ -88,11 +73,11 @@ func (r *room) run()  {
 			close(clientLeave.send)
 			r.tracer.Trace("User leave room <-r.leave")
 			//fmt.Println("User leave room <-r.leave")
-		case msg := <-r.forward :
+		case msg := <-r.forward:
 			// forward message to all clients
 			for c := range r.clients {
 				select {
-				case c.send <-msg:
+				case c.send <- msg:
 					// send message to client
 					r.tracer.Trace("Message received: ", msg.Message)
 				default:
@@ -108,6 +93,23 @@ func (r *room) run()  {
 	}
 }
 
+// Factory function
+// Update the newRoom function so that we can pass in an Avatar implementation for use;
+// we will just assign this implementation to the new field when we create our room instance:
+//func newRoom() *room {
+func newRoom(avatar Avatar) *room {
+	r := room{
+		//we change to message struct
+		//forward: make(chan []byte),
+		forward: make(chan *message),
+		join:    make(chan *client),
+		leave:   make(chan *client),
+		clients: make(map[*client]bool),
+		tracer:  trace.Off(),
+		avatar:  avatar,
+	}
+	return &r
+}
 
 // Turning a room into an HTTP handler
 // In order to use web sockets, we must upgrade the HTTP connection using the websocket.Upgrader type,
@@ -130,15 +132,15 @@ func (r *room) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	}
 
 	client := &client{
-		socket: socket,
-		send:   make(chan *message, messageBufferSize),
-		room:   r,
+		socket:   socket,
+		send:     make(chan *message, messageBufferSize),
+		room:     r,
 		userData: objx.MustFromBase64(authCookie.Value),
 	}
 
 	r.join <- client
 
-	defer func() {r.leave <- client}()
+	defer func() { r.leave <- client }()
 
 	// The write method for the client is then called as a Go routine
 	go client.write()
@@ -147,5 +149,3 @@ func (r *room) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	// which will block operations (keeping the connection alive) until it's time to close it
 	client.read()
 }
-
-
