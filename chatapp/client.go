@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/gorilla/websocket"
 	"time"
 )
@@ -46,9 +45,13 @@ func (c *client) read() {
 		// so it make us easy to make a test case right? isn't it?
 		// cool stuff. also we can have another implementation to get from Gravatar instead of user gmail avatar.
 		// NICE
-		msg.AvatarURL, _ = c.room.avatar.GetAvatarURL(c)
+		// msg.AvatarURL, _ = c.room.avatar.GetAvatarURL(c)
+		// fmt.Println("c", *c)
 
-		fmt.Println("c", *c)
+		// we change again to ChatUser
+		if avatarUrl, ok := c.userData["avatar_url"]; ok {
+			msg.AvatarURL = avatarUrl.(string)
+		}
 
 		c.room.forward <- msg
 

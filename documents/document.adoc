@@ -183,3 +183,212 @@ Think about which of the following calls to move are easier to understand:
     move(Animate)
     move(DontAnimate)
 
+== Example Source Code (Chat App)
+
+=== chat.html
+
+./template/chat.html
+[source,html]
+----
+include::../chatapp/templates/chat.html[indent=0]
+----
+
+=== login.html
+
+./template/login.html
+[source,html]
+----
+include::../chatapp/templates/login.html[indent=0]
+----
+
+=== upload.html Avatar
+
+./template/upload.html
+[source,html]
+----
+include::../chatapp/templates/upload.html[indent=0]
+----
+
+=== trace.go (package trace)
+
+./trace/tracer.go (package trace)
+[source,go]
+----
+include::../chatapp/trace/tracer.go[indent=0]
+----
+
+=== tracer_test.go (package trace)
+
+./trace/tracer_test.go (package trace)
+[source,go]
+----
+include::../chatapp/trace/tracer_test.go[indent=0]
+----
+
+
+=== auth.go (package main)
+
+.auth.go (package main)
+[source,go]
+----
+include::../chatapp/auth.go[indent=0]
+----
+
+=== avatar.go (package main)
+
+.avatar.go (package main)
+[source,go]
+----
+include::../chatapp/avatar.go[indent=0]
+----
+
+=== avatar_test.go (package main)
+
+.avatar_test.go (package main)
+[source,go]
+----
+include::../chatapp/avatar_test.go[indent=0]
+----
+
+=== message.go (package main)
+
+.message.go (package main)
+[source,go]
+----
+include::../chatapp/message.go[indent=0]
+----
+
+=== upload.go (package main)
+
+.upload.go (package main)
+[source,go]
+----
+include::../chatapp/upload.go[indent=0]
+----
+
+=== room.go (package main)
+
+.room.go (package main)
+[source,go]
+----
+include::../chatapp/room.go[indent=0]
+----
+
+=== client.go (package main)
+
+.client.go (package main)
+[source,go]
+----
+include::../chatapp/client.go[indent=0]
+----
+
+
+=== main.go (package main)
+
+.main.go (package main)
+[source,go]
+----
+include::../chatapp/main.go[indent=0]
+----
+
+
+== Command-Line Tools to Find Domain Names
+
+- How to build complete command-line applications with as little as a single code file
+- How to ensure that the tools we build can be composed with other tools using standard streams
+- How to interact with a simple third-party JSON RESTful API
+- How to utilize the standard in and out pipes in Go code
+- How to read from a streaming source, one line at a time
+- How to build a WHOIS client to look up domain information
+- How to store and use sensitive or deployment-specific information in environment variables
+
+
+=== Five simple programs
+
+In this chapter, we will build five small programs that we will combine at the end. The key features of the programs are as follows:
+
+- Sprinkle: This program will add some web-friendly sprinkle words to increase the chances of finding the available domain names.
+- Domainify: This program will ensure words are acceptable for a domain name by removing unacceptable characters. Once this is done, it will replace spaces with hyphens and add an appropriate top-level domain (such as .com and .net) to the end.
+- Coolify: This program will change a boring old normal word to Web 2.0 by fiddling around with vowels.
+- Synonyms: This pro will use a third-party API to find synonyms.
+- Available: This gram will use a third-party API to find synonyms. Available: This program will check to see whether the domain is available or not using an appropriate WHOIS server.
+
+    https://words.bighugelabs.com/admin/e2156942a266d0349bb26f8ae7771462
+
+    export BHT_APIKEY=e2156942a266d0349bb26f8ae7771462
+
+
+
+.https://words.bighugelabs.com/admin/e2156942a266d0349bb26f8ae7771462 ,
+
+see the code consume json on bighuge.go
+
+[source,json]
+----
+{
+   "noun":{
+      "syn":[
+         "news",
+         "intelligence",
+         "tidings",
+         "discussion",
+         "give-and-take",
+         "parole",
+         "word of honor",
+         "Son",
+         "Word",
+         "Logos",
+         "password",
+         "watchword",
+         "countersign",
+         "Bible",
+         "Christian Bible",
+         "Book",
+         "Good Book",
+         "Holy Scripture",
+         "Holy Writ",
+         "Scripture",
+         "Word of God",
+         "arcanum",
+         "computer memory unit",
+         "hypostasis",
+         "hypostasis of Christ",
+         "info",
+         "information",
+         "language",
+         "language unit",
+         "linguistic unit",
+         "oral communication",
+         "order",
+         "positive identification",
+         "promise",
+         "religious text",
+         "religious writing",
+         "sacred text",
+         "sacred writing",
+         "secret",
+         "speech",
+         "speech communication",
+         "spoken communication",
+         "spoken language",
+         "statement",
+         "voice communication"
+      ]
+   },
+   "verb":{
+      "syn":[
+         "give voice",
+         "formulate",
+         "phrase",
+         "articulate",
+         "evince",
+         "express",
+         "show"
+      ]
+   }
+}
+----
+
+    ./domain/synonyms/synonyms | ./domain/sprinkle/sprinkle | ./domain/coolify/coolify |  ./domain/domainify/domainify
+
+then type chat

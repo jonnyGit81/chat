@@ -1,12 +1,33 @@
 package main
 
 import (
+	"crypto/md5"
 	"fmt"
 	"github.com/stretchr/gomniauth"
+	gomniauthcommon "github.com/stretchr/gomniauth/common"
 	"github.com/stretchr/objx"
+	"io"
+	"log"
 	"net/http"
 	"strings"
 )
+
+type ChatUser interface {
+	UniqueID() string
+	AvatarURL() string
+}
+
+// It also makes use of a very interesting feature in Go: type embedding.
+// We actually embedded the gomniauth/common.User interface type,
+// which means that our struct interface implements the interface automatically.
+type chatUser struct {
+	gomniauthcommon.User
+	uniqueID string
+}
+
+func (u chatUser) UniqueID() string {
+	return u.uniqueID
+}
 
 type authHandler struct {
 	next http.Handler
@@ -94,21 +115,46 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		/* Change to chat user
 		usr, err := provider.GetUser(cred)
 		if err != nil {
 			http.Error(w, fmt.Sprintf("Error when trying to get user from %s: %s",
 				provider, err), http.StatusInternalServerError)
 			return
 		}
+		*/
+
+		// So now is dynamic implementation of get user gravatar
+		usr, err := provider.GetUser(cred)
+		if err != nil {
+			log.Fatalln("Error when trying to get user from", provider, "-", err)
+		}
+		chatUser := &chatUser{User: usr}
+		m := md5.New()
+		io.WriteString(m, strings.ToLower(usr.Email()))
+		chatUser.uniqueID = fmt.Sprintf("%x", m.Sum(nil))
+		avatarURL, err := avatars.GetAvatarURL(chatUser)
+		if err != nil {
+			log.Fatalln("Error when trying to GetAvatarURL", "-", err)
+		}
 
 		fmt.Println("usr", usr)
 
-		fmt.Println("avatar", usr.AvatarURL())
+		// Here, we have hashed the e-mail address and stored the resulting value in the userid field at the point at which the user logs in.
+		// From now on, we can use this value in our Gravatar code instead of hashing the e-mail address for every message.
 
+		/* we chance it to cache in cookie, get from chatuser
+		m := md5.New()
+		io.WriteString(m, strings.ToLower(usr.Email()))
+		userid := fmt.Sprintf("%x", m.Sum(nil))
+		*/
 		authCookieValue := objx.New(map[string]interface{}{
-			"name":       usr.Name(),
-			"avatar_url": usr.AvatarURL(),
-			"email":      usr.Email(),
+			//"userid": userid,
+			"userid": chatUser.uniqueID,
+			"name":   usr.Name(),
+			//"avatar_url": usr.AvatarURL(),
+			"avatar_url": avatarURL,
+			// "email":      usr.Email(), no longer need
 		}).MustBase64()
 
 		http.SetCookie(w, &http.Cookie{

@@ -15,6 +15,12 @@ import (
 	"text/template"
 )
 
+// set the active Avatar implementation
+var avatars Avatar = TryAvatars{
+	UseFileSystemAvatar,
+	UseAuthAvatar,
+	UseGravatar}
+
 //  this struct type that is responsible for loading, compiling, and delivering our template.
 //  compile the template once (using the sync.Once type),
 //  keep the reference to the compiled template, and then respond to HTTP requests.
@@ -118,6 +124,27 @@ func main() {
 		w.WriteHeader(http.StatusTemporaryRedirect)
 	})
 
+	// upload avatar html template
+	http.Handle("/upload", &templateHandler{filename: "upload.html"})
+
+	// upload
+	http.HandleFunc("/uploader", uploaderHandler)
+
+	// Serve image file
+	// . Both http.StripPrefix and http.FileServer return http.Handler,
+	// and they make use of the wrapping pattern we learned about in the previous chapter.
+	// The StripPrefix function takes http.Handler in,
+	// modifies the path by removing the specified prefix,
+	// and passes the functionality onto an inner handler.
+	// In our case, the inner handler is an http.FileServer handler that will simply serve static files,
+	// provide index listings, and generate the 404 Not Found error if it cannot find the file.
+	// The http.Dir function allows us to specify which folder we want to expose publicly.
+	// If we didn't strip the /avatars/ prefix from the requests with http.StripPrefix,
+	// the file server would look for another folder called avatars inside the actual avatars folder,
+	// that is, /avatars/avatars/filename instead of /avatars/filename.
+	http.Handle("/avatars/",
+		http.StripPrefix("/avatars/", http.FileServer(http.Dir("./avatars"))))
+
 	// room controller
 	// We didn't have to create an instance of AuthAvatar, so no memory was allocated. In our case,
 	// this doesn't result in great saving (since we only have one room for our entire application),
@@ -128,7 +155,13 @@ func main() {
 	//r := newRoom(UseAuthAvatar)
 
 	// Or we want to use Gravatar instead
-	r := newRoom(UseGravatar)
+	// r := newRoom(UseGravatar)
+
+	// Or we use system file avatar
+	//r := newRoom(UseFileSystemAvatar)
+
+	//now we use global variable  var avatars Avatar = UseFileSystemAvatar
+	r := newRoom()
 
 	// if user dont want to use any tracer
 	//r.trace = trace.New(os.Stdout)

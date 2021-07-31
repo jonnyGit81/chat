@@ -1,0 +1,2117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.10">
+<meta name="author" content="Jonny">
+<title>Go Lang Starter</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+<style>
+/* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
+/* Uncomment @import statement to use as custom stylesheet */
+/*@import "https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700";*/
+article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section{display:block}
+audio,video{display:inline-block}
+audio:not([controls]){display:none;height:0}
+html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}
+a{background:none}
+a:focus{outline:thin dotted}
+a:active,a:hover{outline:0}
+h1{font-size:2em;margin:.67em 0}
+abbr[title]{border-bottom:1px dotted}
+b,strong{font-weight:bold}
+dfn{font-style:italic}
+hr{-moz-box-sizing:content-box;box-sizing:content-box;height:0}
+mark{background:#ff0;color:#000}
+code,kbd,pre,samp{font-family:monospace;font-size:1em}
+pre{white-space:pre-wrap}
+q{quotes:"\201C" "\201D" "\2018" "\2019"}
+small{font-size:80%}
+sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}
+sup{top:-.5em}
+sub{bottom:-.25em}
+img{border:0}
+svg:not(:root){overflow:hidden}
+figure{margin:0}
+fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}
+legend{border:0;padding:0}
+button,input,select,textarea{font-family:inherit;font-size:100%;margin:0}
+button,input{line-height:normal}
+button,select{text-transform:none}
+button,html input[type="button"],input[type="reset"],input[type="submit"]{-webkit-appearance:button;cursor:pointer}
+button[disabled],html input[disabled]{cursor:default}
+input[type="checkbox"],input[type="radio"]{box-sizing:border-box;padding:0}
+button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}
+textarea{overflow:auto;vertical-align:top}
+table{border-collapse:collapse;border-spacing:0}
+*,*::before,*::after{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}
+html,body{font-size:100%}
+body{background:#fff;color:rgba(0,0,0,.8);padding:0;margin:0;font-family:"Noto Serif","DejaVu Serif",serif;font-weight:400;font-style:normal;line-height:1;position:relative;cursor:auto;tab-size:4;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased}
+a:hover{cursor:pointer}
+img,object,embed{max-width:100%;height:auto}
+object,embed{height:100%}
+img{-ms-interpolation-mode:bicubic}
+.left{float:left!important}
+.right{float:right!important}
+.text-left{text-align:left!important}
+.text-right{text-align:right!important}
+.text-center{text-align:center!important}
+.text-justify{text-align:justify!important}
+.hide{display:none}
+img,object,svg{display:inline-block;vertical-align:middle}
+textarea{height:auto;min-height:50px}
+select{width:100%}
+.center{margin-left:auto;margin-right:auto}
+.stretch{width:100%}
+.subheader,.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{line-height:1.45;color:#7a2518;font-weight:400;margin-top:0;margin-bottom:.25em}
+div,dl,dt,dd,ul,ol,li,h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6,pre,form,p,blockquote,th,td{margin:0;padding:0;direction:ltr}
+a{color:#2156a5;text-decoration:underline;line-height:inherit}
+a:hover,a:focus{color:#1d4b8f}
+a img{border:0}
+p{font-family:inherit;font-weight:400;font-size:1em;line-height:1.6;margin-bottom:1.25em;text-rendering:optimizeLegibility}
+p aside{font-size:.875em;line-height:1.35;font-style:italic}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{font-family:"Open Sans","DejaVu Sans",sans-serif;font-weight:300;font-style:normal;color:#ba3925;text-rendering:optimizeLegibility;margin-top:1em;margin-bottom:.5em;line-height:1.0125em}
+h1 small,h2 small,h3 small,#toctitle small,.sidebarblock>.content>.title small,h4 small,h5 small,h6 small{font-size:60%;color:#e99b8f;line-height:0}
+h1{font-size:2.125em}
+h2{font-size:1.6875em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.375em}
+h4,h5{font-size:1.125em}
+h6{font-size:1em}
+hr{border:solid #dddddf;border-width:1px 0 0;clear:both;margin:1.25em 0 1.1875em;height:0}
+em,i{font-style:italic;line-height:inherit}
+strong,b{font-weight:bold;line-height:inherit}
+small{font-size:60%;line-height:inherit}
+code{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;font-weight:400;color:rgba(0,0,0,.9)}
+ul,ol,dl{font-size:1em;line-height:1.6;margin-bottom:1.25em;list-style-position:outside;font-family:inherit}
+ul,ol{margin-left:1.5em}
+ul li ul,ul li ol{margin-left:1.25em;margin-bottom:0;font-size:1em}
+ul.square li ul,ul.circle li ul,ul.disc li ul{list-style:inherit}
+ul.square{list-style-type:square}
+ul.circle{list-style-type:circle}
+ul.disc{list-style-type:disc}
+ol li ul,ol li ol{margin-left:1.25em;margin-bottom:0}
+dl dt{margin-bottom:.3125em;font-weight:bold}
+dl dd{margin-bottom:1.25em}
+abbr,acronym{text-transform:uppercase;font-size:90%;color:rgba(0,0,0,.8);border-bottom:1px dotted #ddd;cursor:help}
+abbr{text-transform:none}
+blockquote{margin:0 0 1.25em;padding:.5625em 1.25em 0 1.1875em;border-left:1px solid #ddd}
+blockquote cite{display:block;font-size:.9375em;color:rgba(0,0,0,.6)}
+blockquote cite::before{content:"\2014 \0020"}
+blockquote cite a,blockquote cite a:visited{color:rgba(0,0,0,.6)}
+blockquote,blockquote p{line-height:1.6;color:rgba(0,0,0,.85)}
+@media screen and (min-width:768px){h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2}
+h1{font-size:2.75em}
+h2{font-size:2.3125em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.6875em}
+h4{font-size:1.4375em}}
+table{background:#fff;margin-bottom:1.25em;border:solid 1px #dedede}
+table thead,table tfoot{background:#f7f8f7}
+table thead tr th,table thead tr td,table tfoot tr th,table tfoot tr td{padding:.5em .625em .625em;font-size:inherit;color:rgba(0,0,0,.8);text-align:left}
+table tr th,table tr td{padding:.5625em .625em;font-size:inherit;color:rgba(0,0,0,.8)}
+table tr.even,table tr.alt{background:#f8f8f7}
+table thead tr th,table tfoot tr th,table tbody tr td,table tr td,table tfoot tr td{display:table-cell;line-height:1.6}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2;word-spacing:-.05em}
+h1 strong,h2 strong,h3 strong,#toctitle strong,.sidebarblock>.content>.title strong,h4 strong,h5 strong,h6 strong{font-weight:400}
+.clearfix::before,.clearfix::after,.float-group::before,.float-group::after{content:" ";display:table}
+.clearfix::after,.float-group::after{clear:both}
+:not(pre):not([class^=L])>code{font-size:.9375em;font-style:normal!important;letter-spacing:0;padding:.1em .5ex;word-spacing:-.15em;background:#f7f7f8;-webkit-border-radius:4px;border-radius:4px;line-height:1.45;text-rendering:optimizeSpeed;word-wrap:break-word}
+:not(pre)>code.nobreak{word-wrap:normal}
+:not(pre)>code.nowrap{white-space:nowrap}
+pre{color:rgba(0,0,0,.9);font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;line-height:1.45;text-rendering:optimizeSpeed}
+pre code,pre pre{color:inherit;font-size:inherit;line-height:inherit}
+pre>code{display:block}
+pre.nowrap,pre.nowrap pre{white-space:pre;word-wrap:normal}
+em em{font-style:normal}
+strong strong{font-weight:400}
+.keyseq{color:rgba(51,51,51,.8)}
+kbd{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;display:inline-block;color:rgba(0,0,0,.8);font-size:.65em;line-height:1.45;background:#f7f7f7;border:1px solid #ccc;-webkit-border-radius:3px;border-radius:3px;-webkit-box-shadow:0 1px 0 rgba(0,0,0,.2),0 0 0 .1em white inset;box-shadow:0 1px 0 rgba(0,0,0,.2),0 0 0 .1em #fff inset;margin:0 .15em;padding:.2em .5em;vertical-align:middle;position:relative;top:-.1em;white-space:nowrap}
+.keyseq kbd:first-child{margin-left:0}
+.keyseq kbd:last-child{margin-right:0}
+.menuseq,.menuref{color:#000}
+.menuseq b:not(.caret),.menuref{font-weight:inherit}
+.menuseq{word-spacing:-.02em}
+.menuseq b.caret{font-size:1.25em;line-height:.8}
+.menuseq i.caret{font-weight:bold;text-align:center;width:.45em}
+b.button::before,b.button::after{position:relative;top:-1px;font-weight:400}
+b.button::before{content:"[";padding:0 3px 0 2px}
+b.button::after{content:"]";padding:0 2px 0 3px}
+p a>code:hover{color:rgba(0,0,0,.9)}
+#header,#content,#footnotes,#footer{width:100%;margin-left:auto;margin-right:auto;margin-top:0;margin-bottom:0;max-width:62.5em;*zoom:1;position:relative;padding-left:.9375em;padding-right:.9375em}
+#header::before,#header::after,#content::before,#content::after,#footnotes::before,#footnotes::after,#footer::before,#footer::after{content:" ";display:table}
+#header::after,#content::after,#footnotes::after,#footer::after{clear:both}
+#content{margin-top:1.25em}
+#content::before{content:none}
+#header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
+#header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #dddddf}
+#header>h1:only-child,body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
+#header .details{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:-ms-flexbox;display:-webkit-flex;display:flex;-ms-flex-flow:row wrap;-webkit-flex-flow:row wrap;flex-flow:row wrap}
+#header .details span:first-child{margin-left:-.125em}
+#header .details span.email a{color:rgba(0,0,0,.85)}
+#header .details br{display:none}
+#header .details br+span::before{content:"\00a0\2013\00a0"}
+#header .details br+span.author::before{content:"\00a0\22c5\00a0";color:rgba(0,0,0,.85)}
+#header .details br+span#revremark::before{content:"\00a0|\00a0"}
+#header #revnumber{text-transform:capitalize}
+#header #revnumber::after{content:"\00a0"}
+#content>h1:first-child:not([class]){color:rgba(0,0,0,.85);border-bottom:1px solid #dddddf;padding-bottom:8px;margin-top:0;padding-top:1rem;margin-bottom:1.25rem}
+#toc{border-bottom:1px solid #e7e7e9;padding-bottom:.5em}
+#toc>ul{margin-left:.125em}
+#toc ul.sectlevel0>li>a{font-style:italic}
+#toc ul.sectlevel0 ul.sectlevel1{margin:.5em 0}
+#toc ul{font-family:"Open Sans","DejaVu Sans",sans-serif;list-style-type:none}
+#toc li{line-height:1.3334;margin-top:.3334em}
+#toc a{text-decoration:none}
+#toc a:active{text-decoration:underline}
+#toctitle{color:#7a2518;font-size:1.2em}
+@media screen and (min-width:768px){#toctitle{font-size:1.375em}
+body.toc2{padding-left:15em;padding-right:0}
+#toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
+#toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
+#toc.toc2>ul{font-size:.9em;margin-bottom:0}
+#toc.toc2 ul ul{margin-left:0;padding-left:1em}
+#toc.toc2 ul.sectlevel0 ul.sectlevel1{padding-left:0;margin-top:.5em;margin-bottom:.5em}
+body.toc2.toc-right{padding-left:0;padding-right:15em}
+body.toc2.toc-right #toc.toc2{border-right-width:0;border-left:1px solid #e7e7e9;left:auto;right:0}}
+@media screen and (min-width:1280px){body.toc2{padding-left:20em;padding-right:0}
+#toc.toc2{width:20em}
+#toc.toc2 #toctitle{font-size:1.375em}
+#toc.toc2>ul{font-size:.95em}
+#toc.toc2 ul ul{padding-left:1.25em}
+body.toc2.toc-right{padding-left:0;padding-right:20em}}
+#content #toc{border-style:solid;border-width:1px;border-color:#e0e0dc;margin-bottom:1.25em;padding:1.25em;background:#f8f8f7;-webkit-border-radius:4px;border-radius:4px}
+#content #toc>:first-child{margin-top:0}
+#content #toc>:last-child{margin-bottom:0}
+#footer{max-width:100%;background:rgba(0,0,0,.8);padding:1.25em}
+#footer-text{color:rgba(255,255,255,.8);line-height:1.44}
+#content{margin-bottom:.625em}
+.sect1{padding-bottom:.625em}
+@media screen and (min-width:768px){#content{margin-bottom:1.25em}
+.sect1{padding-bottom:1.25em}}
+.sect1:last-child{padding-bottom:0}
+.sect1+.sect1{border-top:1px solid #e7e7e9}
+#content h1>a.anchor,h2>a.anchor,h3>a.anchor,#toctitle>a.anchor,.sidebarblock>.content>.title>a.anchor,h4>a.anchor,h5>a.anchor,h6>a.anchor{position:absolute;z-index:1001;width:1.5ex;margin-left:-1.5ex;display:block;text-decoration:none!important;visibility:hidden;text-align:center;font-weight:400}
+#content h1>a.anchor::before,h2>a.anchor::before,h3>a.anchor::before,#toctitle>a.anchor::before,.sidebarblock>.content>.title>a.anchor::before,h4>a.anchor::before,h5>a.anchor::before,h6>a.anchor::before{content:"\00A7";font-size:.85em;display:block;padding-top:.1em}
+#content h1:hover>a.anchor,#content h1>a.anchor:hover,h2:hover>a.anchor,h2>a.anchor:hover,h3:hover>a.anchor,#toctitle:hover>a.anchor,.sidebarblock>.content>.title:hover>a.anchor,h3>a.anchor:hover,#toctitle>a.anchor:hover,.sidebarblock>.content>.title>a.anchor:hover,h4:hover>a.anchor,h4>a.anchor:hover,h5:hover>a.anchor,h5>a.anchor:hover,h6:hover>a.anchor,h6>a.anchor:hover{visibility:visible}
+#content h1>a.link,h2>a.link,h3>a.link,#toctitle>a.link,.sidebarblock>.content>.title>a.link,h4>a.link,h5>a.link,h6>a.link{color:#ba3925;text-decoration:none}
+#content h1>a.link:hover,h2>a.link:hover,h3>a.link:hover,#toctitle>a.link:hover,.sidebarblock>.content>.title>a.link:hover,h4>a.link:hover,h5>a.link:hover,h6>a.link:hover{color:#a53221}
+details,.audioblock,.imageblock,.literalblock,.listingblock,.stemblock,.videoblock{margin-bottom:1.25em}
+details>summary:first-of-type{cursor:pointer;display:list-item;outline:none;margin-bottom:.75em}
+.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{text-rendering:optimizeLegibility;text-align:left;font-family:"Noto Serif","DejaVu Serif",serif;font-size:1rem;font-style:italic}
+table.tableblock.fit-content>caption.title{white-space:nowrap;width:0}
+.paragraph.lead>p,#preamble>.sectionbody>[class="paragraph"]:first-of-type p{font-size:1.21875em;line-height:1.6;color:rgba(0,0,0,.85)}
+table.tableblock #preamble>.sectionbody>[class="paragraph"]:first-of-type p{font-size:inherit}
+.admonitionblock>table{border-collapse:separate;border:0;background:none;width:100%}
+.admonitionblock>table td.icon{text-align:center;width:80px}
+.admonitionblock>table td.icon img{max-width:none}
+.admonitionblock>table td.icon .title{font-weight:bold;font-family:"Open Sans","DejaVu Sans",sans-serif;text-transform:uppercase}
+.admonitionblock>table td.content{padding-left:1.125em;padding-right:1.25em;border-left:1px solid #dddddf;color:rgba(0,0,0,.6)}
+.admonitionblock>table td.content>:last-child>:last-child{margin-bottom:0}
+.exampleblock>.content{border-style:solid;border-width:1px;border-color:#e6e6e6;margin-bottom:1.25em;padding:1.25em;background:#fff;-webkit-border-radius:4px;border-radius:4px}
+.exampleblock>.content>:first-child{margin-top:0}
+.exampleblock>.content>:last-child{margin-bottom:0}
+.sidebarblock{border-style:solid;border-width:1px;border-color:#dbdbd6;margin-bottom:1.25em;padding:1.25em;background:#f3f3f2;-webkit-border-radius:4px;border-radius:4px}
+.sidebarblock>:first-child{margin-top:0}
+.sidebarblock>:last-child{margin-bottom:0}
+.sidebarblock>.content>.title{color:#7a2518;margin-top:0;text-align:center}
+.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
+.literalblock pre,.listingblock>.content>pre{-webkit-border-radius:4px;border-radius:4px;word-wrap:break-word;overflow-x:auto;padding:1em;font-size:.8125em}
+@media screen and (min-width:768px){.literalblock pre,.listingblock>.content>pre{font-size:.90625em}}
+@media screen and (min-width:1280px){.literalblock pre,.listingblock>.content>pre{font-size:1em}}
+.literalblock pre,.listingblock>.content>pre:not(.highlight),.listingblock>.content>pre[class="highlight"],.listingblock>.content>pre[class^="highlight "]{background:#f7f7f8}
+.literalblock.output pre{color:#f7f7f8;background:rgba(0,0,0,.9)}
+.listingblock>.content{position:relative}
+.listingblock code[data-lang]::before{display:none;content:attr(data-lang);position:absolute;font-size:.75em;top:.425rem;right:.5rem;line-height:1;text-transform:uppercase;color:inherit;opacity:.5}
+.listingblock:hover code[data-lang]::before{display:block}
+.listingblock.terminal pre .command::before{content:attr(data-prompt);padding-right:.5em;color:inherit;opacity:.5}
+.listingblock.terminal pre .command:not([data-prompt])::before{content:"$"}
+.listingblock pre.highlightjs{padding:0}
+.listingblock pre.highlightjs>code{padding:1em;-webkit-border-radius:4px;border-radius:4px}
+.listingblock pre.prettyprint{border-width:0}
+.prettyprint{background:#f7f7f8}
+pre.prettyprint .linenums{line-height:1.45;margin-left:2em}
+pre.prettyprint li{background:none;list-style-type:inherit;padding-left:0}
+pre.prettyprint li code[data-lang]::before{opacity:1}
+pre.prettyprint li:not(:first-child) code[data-lang]::before{display:none}
+table.linenotable{border-collapse:separate;border:0;margin-bottom:0;background:none}
+table.linenotable td[class]{color:inherit;vertical-align:top;padding:0;line-height:inherit;white-space:normal}
+table.linenotable td.code{padding-left:.75em}
+table.linenotable td.linenos{border-right:1px solid currentColor;opacity:.35;padding-right:.5em}
+pre.pygments .lineno{border-right:1px solid currentColor;opacity:.35;display:inline-block;margin-right:.75em}
+pre.pygments .lineno::before{content:"";margin-right:-.125em}
+.quoteblock{margin:0 1em 1.25em 1.5em;display:table}
+.quoteblock:not(.excerpt)>.title{margin-left:-1.5em;margin-bottom:.75em}
+.quoteblock blockquote,.quoteblock p{color:rgba(0,0,0,.85);font-size:1.15rem;line-height:1.75;word-spacing:.1em;letter-spacing:0;font-style:italic;text-align:justify}
+.quoteblock blockquote{margin:0;padding:0;border:0}
+.quoteblock blockquote::before{content:"\201c";float:left;font-size:2.75em;font-weight:bold;line-height:.6em;margin-left:-.6em;color:#7a2518;text-shadow:0 1px 2px rgba(0,0,0,.1)}
+.quoteblock blockquote>.paragraph:last-child p{margin-bottom:0}
+.quoteblock .attribution{margin-top:.75em;margin-right:.5ex;text-align:right}
+.verseblock{margin:0 1em 1.25em}
+.verseblock pre{font-family:"Open Sans","DejaVu Sans",sans;font-size:1.15rem;color:rgba(0,0,0,.85);font-weight:300;text-rendering:optimizeLegibility}
+.verseblock pre strong{font-weight:400}
+.verseblock .attribution{margin-top:1.25rem;margin-left:.5ex}
+.quoteblock .attribution,.verseblock .attribution{font-size:.9375em;line-height:1.45;font-style:italic}
+.quoteblock .attribution br,.verseblock .attribution br{display:none}
+.quoteblock .attribution cite,.verseblock .attribution cite{display:block;letter-spacing:-.025em;color:rgba(0,0,0,.6)}
+.quoteblock.abstract blockquote::before,.quoteblock.excerpt blockquote::before,.quoteblock .quoteblock blockquote::before{display:none}
+.quoteblock.abstract blockquote,.quoteblock.abstract p,.quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{line-height:1.6;word-spacing:0}
+.quoteblock.abstract{margin:0 1em 1.25em;display:block}
+.quoteblock.abstract>.title{margin:0 0 .375em;font-size:1.15em;text-align:center}
+.quoteblock.excerpt>blockquote,.quoteblock .quoteblock{padding:0 0 .25em 1em;border-left:.25em solid #dddddf}
+.quoteblock.excerpt,.quoteblock .quoteblock{margin-left:0}
+.quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{color:inherit;font-size:1.0625rem}
+.quoteblock.excerpt .attribution,.quoteblock .quoteblock .attribution{color:inherit;text-align:left;margin-right:0}
+table.tableblock{max-width:100%;border-collapse:separate}
+p.tableblock:last-child{margin-bottom:0}
+td.tableblock>.content>:last-child{margin-bottom:-1.25em}
+td.tableblock>.content>:last-child.sidebarblock{margin-bottom:0}
+table.tableblock,th.tableblock,td.tableblock{border:0 solid #dedede}
+table.grid-all>thead>tr>.tableblock,table.grid-all>tbody>tr>.tableblock{border-width:0 1px 1px 0}
+table.grid-all>tfoot>tr>.tableblock{border-width:1px 1px 0 0}
+table.grid-cols>*>tr>.tableblock{border-width:0 1px 0 0}
+table.grid-rows>thead>tr>.tableblock,table.grid-rows>tbody>tr>.tableblock{border-width:0 0 1px}
+table.grid-rows>tfoot>tr>.tableblock{border-width:1px 0 0}
+table.grid-all>*>tr>.tableblock:last-child,table.grid-cols>*>tr>.tableblock:last-child{border-right-width:0}
+table.grid-all>tbody>tr:last-child>.tableblock,table.grid-all>thead:last-child>tr>.tableblock,table.grid-rows>tbody>tr:last-child>.tableblock,table.grid-rows>thead:last-child>tr>.tableblock{border-bottom-width:0}
+table.frame-all{border-width:1px}
+table.frame-sides{border-width:0 1px}
+table.frame-topbot,table.frame-ends{border-width:1px 0}
+table.stripes-all tr,table.stripes-odd tr:nth-of-type(odd),table.stripes-even tr:nth-of-type(even),table.stripes-hover tr:hover{background:#f8f8f7}
+th.halign-left,td.halign-left{text-align:left}
+th.halign-right,td.halign-right{text-align:right}
+th.halign-center,td.halign-center{text-align:center}
+th.valign-top,td.valign-top{vertical-align:top}
+th.valign-bottom,td.valign-bottom{vertical-align:bottom}
+th.valign-middle,td.valign-middle{vertical-align:middle}
+table thead th,table tfoot th{font-weight:bold}
+tbody tr th{display:table-cell;line-height:1.6;background:#f7f8f7}
+tbody tr th,tbody tr th p,tfoot tr th,tfoot tr th p{color:rgba(0,0,0,.8);font-weight:bold}
+p.tableblock>code:only-child{background:none;padding:0}
+p.tableblock{font-size:1em}
+ol{margin-left:1.75em}
+ul li ol{margin-left:1.5em}
+dl dd{margin-left:1.125em}
+dl dd:last-child,dl dd:last-child>:last-child{margin-bottom:0}
+ol>li p,ul>li p,ul dd,ol dd,.olist .olist,.ulist .ulist,.ulist .olist,.olist .ulist{margin-bottom:.625em}
+ul.checklist,ul.none,ol.none,ul.no-bullet,ol.no-bullet,ol.unnumbered,ul.unstyled,ol.unstyled{list-style-type:none}
+ul.no-bullet,ol.no-bullet,ol.unnumbered{margin-left:.625em}
+ul.unstyled,ol.unstyled{margin-left:0}
+ul.checklist{margin-left:.625em}
+ul.checklist li>p:first-child>.fa-square-o:first-child,ul.checklist li>p:first-child>.fa-check-square-o:first-child{width:1.25em;font-size:.8em;position:relative;bottom:.125em}
+ul.checklist li>p:first-child>input[type="checkbox"]:first-child{margin-right:.25em}
+ul.inline{display:-ms-flexbox;display:-webkit-box;display:flex;-ms-flex-flow:row wrap;-webkit-flex-flow:row wrap;flex-flow:row wrap;list-style:none;margin:0 0 .625em -1.25em}
+ul.inline>li{margin-left:1.25em}
+.unstyled dl dt{font-weight:400;font-style:normal}
+ol.arabic{list-style-type:decimal}
+ol.decimal{list-style-type:decimal-leading-zero}
+ol.loweralpha{list-style-type:lower-alpha}
+ol.upperalpha{list-style-type:upper-alpha}
+ol.lowerroman{list-style-type:lower-roman}
+ol.upperroman{list-style-type:upper-roman}
+ol.lowergreek{list-style-type:lower-greek}
+.hdlist>table,.colist>table{border:0;background:none}
+.hdlist>table>tbody>tr,.colist>table>tbody>tr{background:none}
+td.hdlist1,td.hdlist2{vertical-align:top;padding:0 .625em}
+td.hdlist1{font-weight:bold;padding-bottom:1.25em}
+.literalblock+.colist,.listingblock+.colist{margin-top:-.5em}
+.colist td:not([class]):first-child{padding:.4em .75em 0;line-height:1;vertical-align:top}
+.colist td:not([class]):first-child img{max-width:none}
+.colist td:not([class]):last-child{padding:.25em 0}
+.thumb,.th{line-height:0;display:inline-block;border:solid 4px #fff;-webkit-box-shadow:0 0 0 1px #ddd;box-shadow:0 0 0 1px #ddd}
+.imageblock.left{margin:.25em .625em 1.25em 0}
+.imageblock.right{margin:.25em 0 1.25em .625em}
+.imageblock>.title{margin-bottom:0}
+.imageblock.thumb,.imageblock.th{border-width:6px}
+.imageblock.thumb>.title,.imageblock.th>.title{padding:0 .125em}
+.image.left,.image.right{margin-top:.25em;margin-bottom:.25em;display:inline-block;line-height:0}
+.image.left{margin-right:.625em}
+.image.right{margin-left:.625em}
+a.image{text-decoration:none;display:inline-block}
+a.image object{pointer-events:none}
+sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
+sup.footnote a,sup.footnoteref a{text-decoration:none}
+sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
+#footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
+#footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
+#footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
+#footnotes .footnote a:first-of-type{font-weight:bold;text-decoration:none;margin-left:-1.05em}
+#footnotes .footnote:last-of-type{margin-bottom:0}
+#content #footnotes{margin-top:-.625em;margin-bottom:0;padding:.75em 0}
+.gist .file-data>table{border:0;background:#fff;width:100%;margin-bottom:0}
+.gist .file-data>table td.line-data{width:99%}
+div.unbreakable{page-break-inside:avoid}
+.big{font-size:larger}
+.small{font-size:smaller}
+.underline{text-decoration:underline}
+.overline{text-decoration:overline}
+.line-through{text-decoration:line-through}
+.aqua{color:#00bfbf}
+.aqua-background{background:#00fafa}
+.black{color:#000}
+.black-background{background:#000}
+.blue{color:#0000bf}
+.blue-background{background:#0000fa}
+.fuchsia{color:#bf00bf}
+.fuchsia-background{background:#fa00fa}
+.gray{color:#606060}
+.gray-background{background:#7d7d7d}
+.green{color:#006000}
+.green-background{background:#007d00}
+.lime{color:#00bf00}
+.lime-background{background:#00fa00}
+.maroon{color:#600000}
+.maroon-background{background:#7d0000}
+.navy{color:#000060}
+.navy-background{background:#00007d}
+.olive{color:#606000}
+.olive-background{background:#7d7d00}
+.purple{color:#600060}
+.purple-background{background:#7d007d}
+.red{color:#bf0000}
+.red-background{background:#fa0000}
+.silver{color:#909090}
+.silver-background{background:#bcbcbc}
+.teal{color:#006060}
+.teal-background{background:#007d7d}
+.white{color:#bfbfbf}
+.white-background{background:#fafafa}
+.yellow{color:#bfbf00}
+.yellow-background{background:#fafa00}
+span.icon>.fa{cursor:default}
+a span.icon>.fa{cursor:inherit}
+.admonitionblock td.icon [class^="fa icon-"]{font-size:2.5em;text-shadow:1px 1px 2px rgba(0,0,0,.5);cursor:default}
+.admonitionblock td.icon .icon-note::before{content:"\f05a";color:#19407c}
+.admonitionblock td.icon .icon-tip::before{content:"\f0eb";text-shadow:1px 1px 2px rgba(155,155,0,.8);color:#111}
+.admonitionblock td.icon .icon-warning::before{content:"\f071";color:#bf6900}
+.admonitionblock td.icon .icon-caution::before{content:"\f06d";color:#bf3400}
+.admonitionblock td.icon .icon-important::before{content:"\f06a";color:#bf0000}
+.conum[data-value]{display:inline-block;color:#fff!important;background:rgba(0,0,0,.8);-webkit-border-radius:100px;border-radius:100px;text-align:center;font-size:.75em;width:1.67em;height:1.67em;line-height:1.67em;font-family:"Open Sans","DejaVu Sans",sans-serif;font-style:normal;font-weight:bold}
+.conum[data-value] *{color:#fff!important}
+.conum[data-value]+b{display:none}
+.conum[data-value]::after{content:attr(data-value)}
+pre .conum[data-value]{position:relative;top:-.125em}
+b.conum *{color:inherit!important}
+.conum:not([data-value]):empty{display:none}
+dt,th.tableblock,td.content,div.footnote{text-rendering:optimizeLegibility}
+h1,h2,p,td.content,span.alt{letter-spacing:-.01em}
+p strong,td.content strong,div.footnote strong{letter-spacing:-.005em}
+p,blockquote,dt,td.content,span.alt{font-size:1.0625rem}
+p{margin-bottom:1.25rem}
+.sidebarblock p,.sidebarblock dt,.sidebarblock td.content,p.tableblock{font-size:1em}
+.exampleblock>.content{background:#fffef7;border-color:#e0e0dc;-webkit-box-shadow:0 1px 4px #e0e0dc;box-shadow:0 1px 4px #e0e0dc}
+.print-only{display:none!important}
+@page{margin:1.25cm .75cm}
+@media print{*{-webkit-box-shadow:none!important;box-shadow:none!important;text-shadow:none!important}
+html{font-size:80%}
+a{color:inherit!important;text-decoration:underline!important}
+a.bare,a[href^="#"],a[href^="mailto:"]{text-decoration:none!important}
+a[href^="http:"]:not(.bare)::after,a[href^="https:"]:not(.bare)::after{content:"(" attr(href) ")";display:inline-block;font-size:.875em;padding-left:.25em}
+abbr[title]::after{content:" (" attr(title) ")"}
+pre,blockquote,tr,img,object,svg{page-break-inside:avoid}
+thead{display:table-header-group}
+svg{max-width:100%}
+p,blockquote,dt,td.content{font-size:1em;orphans:3;widows:3}
+h2,h3,#toctitle,.sidebarblock>.content>.title{page-break-after:avoid}
+#toc,.sidebarblock,.exampleblock>.content{background:none!important}
+#toc{border-bottom:1px solid #dddddf!important;padding-bottom:0!important}
+body.book #header{text-align:center}
+body.book #header>h1:first-child{border:0!important;margin:2.5em 0 1em}
+body.book #header .details{border:0!important;display:block;padding:0!important}
+body.book #header .details span:first-child{margin-left:0!important}
+body.book #header .details br{display:block}
+body.book #header .details br+span::before{content:none!important}
+body.book #toc{border:0!important;text-align:left!important;padding:0!important;margin:0!important}
+body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-break-before:always}
+.listingblock code[data-lang]::before{display:block}
+#footer{padding:0 .9375em}
+.hide-on-print{display:none!important}
+.print-only{display:block!important}
+.hide-for-print{display:none!important}
+.show-for-print{display:inherit!important}}
+@media print,amzn-kf8{#header>h1:first-child{margin-top:1.25rem}
+.sect1{padding:0!important}
+.sect1+.sect1{border:0}
+#footer{background:none}
+#footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
+@media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body class="article toc2 toc-left">
+<div id="header">
+<h1>Go Lang Starter</h1>
+<div class="details">
+<span id="author" class="author">Jonny</span><br>
+<span id="revdate">Sunday, 25 July, 2021</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Content</div>
+<ul class="sectlevel1">
+<li><a href="#_install_go">1. Install Go</a></li>
+<li><a href="#_intelij_install_plugins">2. Intelij Install Plugins</a></li>
+<li><a href="#_chapter_1_chat_application_with_web_sockets">3. Chapter 1 Chat Application with Web Sockets</a></li>
+<li><a href="#_chapter_2_adding_user_accounts">4. Chapter 2.  Adding User Accounts</a></li>
+<li><a href="#_hosted_bootstrap_to_your_project_code">5. Hosted bootstrap to your project code :</a></li>
+<li><a href="#_getting_started_with_oauth2">6. Getting started with OAuth2</a></li>
+<li><a href="#_tell_the_authorization_providers_about_your_app">7. Tell the authorization providers about your app</a></li>
+<li><a href="#_chapter_3_three_ways_to_implement_profile_pictures">8. Chapter 3. Three Ways to Implement Profile Pictures</a></li>
+<li><a href="#_example_source_code_chat_app">9. Example Source Code (Chat App)</a>
+<ul class="sectlevel2">
+<li><a href="#_chat_html">9.1. chat.html</a></li>
+<li><a href="#_login_html">9.2. login.html</a></li>
+<li><a href="#_upload_html_avatar">9.3. upload.html Avatar</a></li>
+<li><a href="#_trace_go_package_trace">9.4. trace.go (package trace)</a></li>
+<li><a href="#_tracer_test_go_package_trace">9.5. tracer_test.go (package trace)</a></li>
+<li><a href="#_auth_go_package_main">9.6. auth.go (package main)</a></li>
+<li><a href="#_avatar_go_package_main">9.7. avatar.go (package main)</a></li>
+<li><a href="#_avatar_test_go_package_main">9.8. avatar_test.go (package main)</a></li>
+<li><a href="#_message_go_package_main">9.9. message.go (package main)</a></li>
+<li><a href="#_upload_go_package_main">9.10. upload.go (package main)</a></li>
+<li><a href="#_room_go_package_main">9.11. room.go (package main)</a></li>
+<li><a href="#_client_go_package_main">9.12. client.go (package main)</a></li>
+<li><a href="#_main_go_package_main">9.13. main.go (package main)</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1 has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-24">
+<h2 id="_install_go">1. Install Go</h2>
+<div class="sectionbody">
+<div class="paragraph has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-26">
+<p>Install go by following from Go</p>
+</div>
+<div class="paragraph has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-28">
+<p>set Environment</p>
+</div>
+<div class="literalblock has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-30">
+<div class="content">
+<pre>#GOLANG
+export GOROOT=/usr/local/go
+export PATH=$PATH:$GOROOT/bin</pre>
+</div>
+</div>
+<div class="literalblock has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-34">
+<div class="content">
+<pre>#OUR WORKSPACE
+export GOPATH=$HOME/go/code
+export PATH=$PATH:$GOPATH/bin</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1 has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-38">
+<h2 id="_intelij_install_plugins">2. Intelij Install Plugins</h2>
+<div class="sectionbody">
+<div class="literalblock has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-40">
+<div class="content">
+<pre>go</pre>
+</div>
+</div>
+<div class="literalblock has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-42">
+<div class="content">
+<pre>go template</pre>
+</div>
+</div>
+<div class="paragraph has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-44">
+<p>Setting</p>
+</div>
+<div class="paragraph has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-46">
+<p><span class="image"><img src="images/1.jpeg" alt="1"></span></p>
+</div>
+<div class="paragraph has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-48">
+<p><span class="image"><img src="images/2.jpeg" alt="2"></span></p>
+</div>
+<div class="paragraph has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-50">
+<p><span class="image"><img src="images/3.jpeg" alt="3"></span></p>
+</div>
+<div class="paragraph has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-52">
+<p>New Project</p>
+</div>
+<div class="literalblock has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-54">
+<div class="content">
+<pre>go mod init</pre>
+</div>
+</div>
+<div class="literalblock has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-56">
+<div class="content">
+<pre>go mod tidy</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1 has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-59">
+<h2 id="_chapter_1_chat_application_with_web_sockets">3. Chapter 1 Chat Application with Web Sockets</h2>
+<div class="sectionbody">
+<div class="ulist has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-61">
+<ul>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-61">
+<p>Use the net/http package to serve HTTP requests</p>
+</li>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-62">
+<p>Deliver template-driven content to users' browsers</p>
+</li>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-63">
+<p>Satisfy a Go interface to build our own http.Handler types</p>
+</li>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-64">
+<p>Use Go&#8217;s goroutines to allow an application to perform multiple tasks concurrently</p>
+</li>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-65">
+<p>Use channels to share information between running Go routines</p>
+</li>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-66">
+<p>Upgrade HTTP requests to use modern features such as web sockets</p>
+</li>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-67">
+<p>Add tracing to the application to better understand its inner workings</p>
+</li>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-68">
+<p>Write a complete Go package using test-driven development practices</p>
+</li>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-69">
+<p>Return unexported types through exported interfaces</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1 has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-71">
+<h2 id="_chapter_2_adding_user_accounts">4. Chapter 2.  Adding User Accounts</h2>
+<div class="sectionbody">
+<div class="ulist has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-73">
+<ul>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-73">
+<p>Use the decorator pattern to wrap http.Handler types in order to add additional functionality to handlers</p>
+</li>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-74">
+<p>Serve HTTP endpoints with dynamic paths</p>
+</li>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-75">
+<p>Use the gomniauth open source project to access authentication services</p>
+</li>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-76">
+<p>Get and set cookies using the http package</p>
+</li>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-77">
+<p>Encode objects as Base64 and back to normal again</p>
+</li>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-78">
+<p>Send and receive JSON data over a web socket</p>
+</li>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-79">
+<p>Give different types of data to templates</p>
+</li>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-80">
+<p>Work with the channels of your own types</p>
+</li>
+</ul>
+</div>
+<div class="paragraph has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-82">
+<p><span class="image"><img src="images/4.jpeg" alt="4"></span></p>
+</div>
+</div>
+</div>
+<div class="sect1 has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-85">
+<h2 id="_hosted_bootstrap_to_your_project_code">5. Hosted bootstrap to your project code :</h2>
+<div class="sectionbody">
+<div class="literalblock has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-87">
+<div class="content">
+<pre>http.Handle("/assets/", http.StripPrefix("/assets",    http.FileServer(http.Dir("/path/to/assets/"))))</pre>
+</div>
+</div>
+<div class="literalblock has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-89">
+<div class="content">
+<pre>Notice how the http.StripPrefix and http.FileServer functions return objects that satisfy the http.Handler interface as per the decorator pattern that we implement with our MustAuth helper function.</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1 has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-92">
+<h2 id="_getting_started_with_oauth2">6. Getting started with OAuth2</h2>
+<div class="sectionbody">
+<div class="paragraph has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-93">
+<p>OAuth2 is an open authorization standard designed to allow resource owners to give clients delegated access to private data (such as wall posts or tweets) via an access token exchange handshake. Even if you do not wish to access the private data, OAuth2 is a great option that allows people to sign in using their existing credentials, without exposing those credentials to a third-party site. In this case, we are the third party, and we want to allow our users to sign in using services that support OAuth2.</p>
+</div>
+<div class="paragraph has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-95">
+<p>From a user&#8217;s point of view, the OAuth2 flow is as follows:</p>
+</div>
+<div class="ulist has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-97">
+<ul>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-97">
+<p>The user selects the provider with whom they wish to sign in to the client app.</p>
+</li>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-98">
+<p>The user is redirected to the provider&#8217;s website (with a URL that includes the client app ID) where they are asked to give permission to the client app.</p>
+</li>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-99">
+<p>The user signs in from the OAuth2 service provider and accepts the permissions requested by the third-party application.</p>
+</li>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-100">
+<p>The user is redirected to the client app with a request code.</p>
+</li>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-101">
+<p>In the background, the client app sends the grant code to the provider, who sends back an authentication token.</p>
+</li>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-102">
+<p>The client app uses the access token to make authorized requests to the provider, such as to get user information or wall posts.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-104">
+<p>To avoid reinventing the wheel, we will look at a few open source projects that have already solved this problem for us.</p>
+</div>
+<div class="literalblock has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-106">
+<div class="content">
+<pre>we will use gomniauth to access OAuth services provided by Google, Facebook, and GitHub, so make sure you have it installed by running the following command</pre>
+</div>
+</div>
+<div class="literalblock has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-108">
+<div class="content">
+<pre>go get github.com/stretchr/gomniauth</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1 has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-111">
+<h2 id="_tell_the_authorization_providers_about_your_app">7. Tell the authorization providers about your app</h2>
+<div class="sectionbody">
+<div class="ulist has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-113">
+<ul>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-113">
+<p>Before we ask an authorization provider to help our users sign in,</p>
+</li>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-114">
+<p>we must tell them about our application. M</p>
+</li>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-115">
+<p>ost providers have some kind of web tool or console where you can create applications to kick this process off.</p>
+</li>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-116">
+<p>Here&#8217;s one from Google:</p>
+</li>
+</ul>
+</div>
+<div class="paragraph has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-118">
+<p>In order to identify the client application, we need to create a client ID and secret. Despite the fact that OAuth2 is an open standard, each provider has their own language and mechanism to set things up. Therefore, you will most likely have to play around with the user interface or the documentation to figure it out in each case.</p>
+</div>
+<div class="paragraph has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-120">
+<p>At the time of writing, in <strong>Google Cloud Console</strong>, you navigate to <strong>API Manager</strong> and click on the <strong>Credentials</strong> section.</p>
+</div>
+<div class="olist arabic has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-124">
+<ol class="arabic">
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-124">
+<p>At Credential select Google ADD API KEY</p>
+<div class="literalblock has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-126">
+<div class="content">
+<pre>AIzaSyBFl-aDBbsmx9lGDwdfFsrVAccSYgrEjiE</pre>
+</div>
+</div>
+</li>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-129">
+<p>Add Oauth2 select ouath2
+select web app</p>
+</li>
+</ol>
+</div>
+<div class="paragraph has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-132">
+<p><span class="image"><img src="images/5.jpeg" alt="5"></span></p>
+</div>
+<div class="olist arabic has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-134">
+<ol class="arabic">
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-134">
+<p>save the client id and secret</p>
+</li>
+</ol>
+</div>
+<div class="paragraph has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-136">
+<p>CLient ID</p>
+</div>
+<div class="literalblock has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-138">
+<div class="content">
+<pre>14378472304-oaeg1d6hs32nsk6h1av23mb9hopgsldj.apps.googleusercontent.com</pre>
+</div>
+</div>
+<div class="paragraph has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-140">
+<p>Secret</p>
+</div>
+<div class="literalblock has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-142">
+<div class="content">
+<pre>MucNovJBH6e5sdMfBC9myteU</pre>
+</div>
+</div>
+<div class="paragraph has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-146">
+<p>The <strong>GetBeginAuthURL(nil, nil)</strong> arguments are for the state and options respectively, which we are not going to use for our chat application.</p>
+</div>
+<div class="paragraph has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-148">
+<p>The first argument is a state map of data that is encoded and signed and sent to the authentication provider. The provider doesn&#8217;t do anything with the state; it just sends it back to our callback endpoint. This is useful if, for example, we want to redirect the user back to the original page they were trying to access before the authentication process intervened. For our purpose, we have only the /chat endpoint, so we don&#8217;t need to worry about sending any state.</p>
+</div>
+<div class="paragraph has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-150">
+<p>The second argument is a map of additional options that will be sent to the authentication provider, which somehow modifies the behavior of the authentication process. For example, you can specify your own scope parameter, which allows you to make a request for permission to access additional information from the provider. For more information about the available options, search for OAuth2 on the Internet or read the documentation for each provider, as these values differ from service to service.</p>
+</div>
+<div class="literalblock has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-153">
+<div class="content">
+<pre>We will continue to stop, rebuild, and run our projects manually throughout this book, but there are some tools that will take care of this for you by watching for changes and restarting Go applications automatically. If you're interested in such tools, check out https://github.com/pilu/fresh and https://github.com/codegangsta/gin.</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1 has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-155">
+<h2 id="_chapter_3_three_ways_to_implement_profile_pictures">8. Chapter 3. Three Ways to Implement Profile Pictures</h2>
+<div class="sectionbody">
+<div class="ulist has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-157">
+<ul>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-157">
+<p>What the good practices to get additional information from auth services are, even when there are no standards in place</p>
+</li>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-158">
+<p>When it is appropriate to build abstractions into our code</p>
+</li>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-159">
+<p>How Go&#8217;s zero-initialization pattern can save time and memory</p>
+</li>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-160">
+<p>How reusing an interface allows us to work with collections and individual objects in the same way as the existing interface did</p>
+</li>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-161">
+<p>How to use the <a href="https://en.gravatar.com/" class="bare">https://en.gravatar.com/</a> web service</p>
+</li>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-162">
+<p>How to do MD5 hashing in Go</p>
+</li>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-163">
+<p>How to upload files over HTTP and store them on a server</p>
+</li>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-164">
+<p>How to serve static files through a Go web server</p>
+</li>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-165">
+<p>How to use unit tests to guide the refactoring of code</p>
+</li>
+<li class="has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-166">
+<p>How and when to abstract functionality from struct types into interfaces</p>
+</li>
+</ul>
+</div>
+<div class="paragraph has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-169">
+<p><strong>Cool Stuff</strong></p>
+</div>
+<div class="literalblock has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-171">
+<div class="content">
+<pre>r := newRoom(UseAuthAvatar)</pre>
+</div>
+</div>
+<div class="paragraph has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-173">
+<p>Thinking about code readability is important when designing interfaces. Consider a method that takes a Boolean input just passing in true or false hides the real meaning if you don&#8217;t know the argument names. Consider defining a couple of helper constants, as shown in the following short example:</p>
+</div>
+<div class="literalblock has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-175">
+<div class="content">
+<pre>func move(animated bool) { /* ... */ }
+const Animate = true const
+DontAnimate = false</pre>
+</div>
+</div>
+<div class="paragraph has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-179">
+<p>Think about which of the following calls to move are easier to understand:</p>
+</div>
+<div class="literalblock has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-181">
+<div class="content">
+<pre>move(true)
+move(false)
+move(Animate)
+move(DontAnimate)</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1 has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-186">
+<h2 id="_example_source_code_chat_app">9. Example Source Code (Chat App)</h2>
+<div class="sectionbody">
+<div class="sect2 has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-188">
+<h3 id="_chat_html">9.1. chat.html</h3>
+<div class="listingblock has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/chatapp/templates/chat.html-0">
+<div class="title">/template/chat.html</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="html"><span style="color:#777">&lt;!-- Format Code : Alt+Shift+Command+L --&gt;</span>
+<span style="color:#34b">&lt;!DOCTYPE html&gt;</span>
+<span style="color:#070;font-weight:bold">&lt;html</span> <span style="color:#b48">lang</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">en</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>
+<span style="color:#070;font-weight:bold">&lt;head&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;meta</span> <span style="color:#b48">charset</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">UTF-8</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;title&gt;</span>Chat<span style="color:#070;font-weight:bold">&lt;/title&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;style&gt;</span>
+<span style="background-color:hsla(0,0%,0%,0.07);color:black">        <span style="color:#070;font-weight:bold">input</span> {
+            <span style="color:#606">display</span>: <span style="color:#088">block</span>;
+        }
+
+        <span style="color:#070;font-weight:bold">ul</span> {
+            <span style="color:#606">list-style</span>: <span style="color:#088">none</span>;
+        }</span>
+    <span style="color:#070;font-weight:bold">&lt;/style&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;link</span> <span style="color:#b48">rel</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">stylesheet</span><span style="color:#710">&quot;</span></span> <span style="color:#b48">href</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;style&gt;</span>
+<span style="background-color:hsla(0,0%,0%,0.07);color:black">        <span style="color:#070;font-weight:bold">ul</span><span style="color:#33D;font-weight:bold">#messages</span>        { <span style="color:#606">list-style</span>: <span style="color:#088">none</span>; }
+        <span style="color:#070;font-weight:bold">ul</span><span style="color:#33D;font-weight:bold">#messages</span> <span style="color:#070;font-weight:bold">li</span>     { <span style="color:#606">margin-bottom</span>: <span style="color:#60E">2px</span>; }
+        <span style="color:#070;font-weight:bold">ul</span><span style="color:#33D;font-weight:bold">#messages</span> <span style="color:#070;font-weight:bold">li</span> <span style="color:#070;font-weight:bold">img</span> { <span style="color:#606">margin-right</span>: <span style="color:#60E">10px</span>; }</span>
+    <span style="color:#070;font-weight:bold">&lt;/style&gt;</span>
+<span style="color:#070;font-weight:bold">&lt;/head&gt;</span>
+
+<span style="color:#070;font-weight:bold">&lt;body&gt;</span>
+<span style="color:#070;font-weight:bold">&lt;div</span> <span style="color:#b48">class</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">container</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;div</span> <span style="color:#b48">class</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">panel panel-default</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>
+        <span style="color:#070;font-weight:bold">&lt;div</span> <span style="color:#b48">class</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">panel-body</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>
+            <span style="color:#070;font-weight:bold">&lt;ul</span> <span style="color:#b48">id</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">messages</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span><span style="color:#070;font-weight:bold">&lt;/ul&gt;</span>
+        <span style="color:#070;font-weight:bold">&lt;/div&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;/div&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;form</span> <span style="color:#b48">id</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">chatbox</span><span style="color:#710">&quot;</span></span> <span style="color:#b48">role</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">form</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>
+        <span style="color:#070;font-weight:bold">&lt;div</span> <span style="color:#b48">class</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">form-group</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>
+            <span style="color:#070;font-weight:bold">&lt;label</span> <span style="color:#b48">for</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">message</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>Send a message as {{.UserData.name}}
+            <span style="color:#070;font-weight:bold">&lt;/label&gt;</span> or <span style="color:#070;font-weight:bold">&lt;a</span> <span style="color:#b48">href</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/logout</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>Sign out<span style="color:#070;font-weight:bold">&lt;/a&gt;</span>
+            <span style="color:#070;font-weight:bold">&lt;textarea</span> <span style="color:#b48">id</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">message</span><span style="color:#710">&quot;</span></span> <span style="color:#b48">class</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">form-control</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span><span style="color:#070;font-weight:bold">&lt;/textarea&gt;</span>
+        <span style="color:#070;font-weight:bold">&lt;/div&gt;</span>
+        <span style="color:#070;font-weight:bold">&lt;input</span> <span style="color:#b48">type</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">submit</span><span style="color:#710">&quot;</span></span> <span style="color:#b48">value</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Send</span><span style="color:#710">&quot;</span></span> <span style="color:#b48">class</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">btn btn-default</span><span style="color:#710">&quot;</span></span> <span style="color:#070;font-weight:bold">/&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;/form&gt;</span>
+<span style="color:#070;font-weight:bold">&lt;/div&gt;</span>
+
+<span style="color:#070;font-weight:bold">&lt;script</span> <span style="color:#b48">src</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span><span style="color:#070;font-weight:bold">&lt;/script&gt;</span>
+<span style="color:#070;font-weight:bold">&lt;script&gt;</span>
+<span style="background-color:hsla(0,0%,0%,0.07);color:black">    <span style="color:#369;font-weight:bold">$</span>(<span style="color:#080;font-weight:bold">function</span> () {
+        <span style="color:#080;font-weight:bold">var</span> socket = <span style="color:#069">null</span>;
+        <span style="color:#080;font-weight:bold">var</span> msgBox = <span style="color:#369;font-weight:bold">$</span>(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">#chatbox textarea</span><span style="color:#710">&quot;</span></span>);
+        <span style="color:#080;font-weight:bold">var</span> messages = <span style="color:#369;font-weight:bold">$</span>(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">#messages</span><span style="color:#710">&quot;</span></span>);
+        <span style="color:#369;font-weight:bold">$</span>(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">#chatbox</span><span style="color:#710">&quot;</span></span>).submit(<span style="color:#080;font-weight:bold">function</span> () {
+            <span style="color:#080;font-weight:bold">if</span> (!msgBox.val()) <span style="color:#080;font-weight:bold">return</span> <span style="color:#069">false</span>;
+            <span style="color:#080;font-weight:bold">if</span> (!socket) {
+                alert(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Error: There is no socket connection.</span><span style="color:#710">&quot;</span></span>);
+                <span style="color:#080;font-weight:bold">return</span> <span style="color:#069">false</span>;
+            }
+
+            <span style="color:#777">// We are using JSON.stringify to serialize the specified JSON object</span>
+            <span style="color:#777">// (containing just the Message field) into a string, which is then sent to the server.</span>
+            <span style="color:#777">// Our Go code will decode (or unmarshal) the JSON string into a message object,</span>
+            <span style="color:#777">// matching the field names from the client JSON object with those of our message type.</span>
+            socket.send(JSON.stringify({<span style="color:#606"><span style="color:#404">&quot;</span><span>Message</span><span style="color:#404">&quot;</span></span>: msgBox.val()}));
+            msgBox.val(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>);
+            console.log(msgBox.val())
+            <span style="color:#080;font-weight:bold">return</span> <span style="color:#069">false</span>;
+        });
+        <span style="color:#080;font-weight:bold">if</span> (!window[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">WebSocket</span><span style="color:#710">&quot;</span></span>]) {
+            alert(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Error: Your browser does not support web sockets.</span><span style="color:#710">&quot;</span></span>)
+        } <span style="color:#080;font-weight:bold">else</span> {
+            <span style="color:#777">/*
+                The double curly braces represent an annotation and the way we tell our template source to inject data.
+                The {{.Host}} is essentially equivalent of telling it to replace the annotation with the value from request.Host
+                (since we passed the request r object in as data).
+             */</span>
+            socket = <span style="color:#080;font-weight:bold">new</span> WebSocket(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">ws://{{.Host}}/room</span><span style="color:#710">&quot;</span></span>);
+            socket.<span style="color:#06B;font-weight:bold">onclose</span> = <span style="color:#080;font-weight:bold">function</span> () {
+                alert(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Connection has been closed.</span><span style="color:#710">&quot;</span></span>);
+            }
+            socket.<span style="color:#06B;font-weight:bold">onmessage</span> = <span style="color:#080;font-weight:bold">function</span> (e) {
+                <span style="color:#080;font-weight:bold">var</span> msg = JSON.parse(e.data);
+                messages.append(
+                    <span style="color:#369;font-weight:bold">$</span>(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">&lt;li&gt;</span><span style="color:#710">&quot;</span></span>).append(
+                        <span style="color:#369;font-weight:bold">$</span>(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">&lt;img&gt;</span><span style="color:#710">&quot;</span></span>).attr(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">title</span><span style="color:#710">&quot;</span></span>, msg.Name).css({
+                            <span style="color:#606">width</span>:<span style="color:#00D">50</span>,
+                            <span style="color:#606">verticalAlign</span>:<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">middle</span><span style="color:#710">&quot;</span></span>
+                        }).attr(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">src</span><span style="color:#710">&quot;</span></span>, msg.AvatarURL),
+                        <span style="color:#369;font-weight:bold">$</span>(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">&lt;span&gt;</span><span style="color:#710">&quot;</span></span>).text(msg.Message)
+                    )
+                );
+            }
+        }
+    });</span>
+<span style="color:#070;font-weight:bold">&lt;/script&gt;</span>
+<span style="color:#070;font-weight:bold">&lt;/body&gt;</span>
+<span style="color:#070;font-weight:bold">&lt;/html&gt;</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2 has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-196">
+<h3 id="_login_html">9.2. login.html</h3>
+<div class="listingblock has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/chatapp/templates/login.html-0">
+<div class="title">/template/login.html</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="html"><span style="color:#34b">&lt;!DOCTYPE html&gt;</span>
+<span style="color:#070;font-weight:bold">&lt;html</span> <span style="color:#b48">lang</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">en</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>
+<span style="color:#070;font-weight:bold">&lt;head&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;meta</span> <span style="color:#b48">charset</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">UTF-8</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;title&gt;</span>Login<span style="color:#070;font-weight:bold">&lt;/title&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;link</span> <span style="color:#b48">rel</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">stylesheet</span><span style="color:#710">&quot;</span></span> <span style="color:#b48">href</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>
+<span style="color:#070;font-weight:bold">&lt;/head&gt;</span>
+<span style="color:#070;font-weight:bold">&lt;body&gt;</span>
+<span style="color:#070;font-weight:bold">&lt;div</span> <span style="color:#b48">class</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">container</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;div</span> <span style="color:#b48">class</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">page-header</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>
+        <span style="color:#070;font-weight:bold">&lt;h1&gt;</span>Sign in<span style="color:#070;font-weight:bold">&lt;/h1&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;/div&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;div</span> <span style="color:#b48">class</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">panel panel-danger</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>
+        <span style="color:#070;font-weight:bold">&lt;div</span> <span style="color:#b48">class</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">panel-heading</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>
+            <span style="color:#070;font-weight:bold">&lt;h3</span> <span style="color:#b48">class</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">panel-title</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>In order to chat, you must be signed
+                in<span style="color:#070;font-weight:bold">&lt;/h3&gt;</span>
+        <span style="color:#070;font-weight:bold">&lt;/div&gt;</span>
+        <span style="color:#070;font-weight:bold">&lt;div</span> <span style="color:#b48">class</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">panel-body</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>
+            <span style="color:#070;font-weight:bold">&lt;p&gt;</span>Select the service you would like to sign in with:<span style="color:#070;font-weight:bold">&lt;/p&gt;</span>
+            <span style="color:#070;font-weight:bold">&lt;ul&gt;</span>
+                <span style="color:#070;font-weight:bold">&lt;li&gt;</span>
+                    <span style="color:#070;font-weight:bold">&lt;a</span> <span style="color:#b48">href</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/auth/login/facebook</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>Facebook<span style="color:#070;font-weight:bold">&lt;/a&gt;</span>
+                <span style="color:#070;font-weight:bold">&lt;/li&gt;</span>
+                <span style="color:#070;font-weight:bold">&lt;li&gt;</span>
+                    <span style="color:#070;font-weight:bold">&lt;a</span> <span style="color:#b48">href</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/auth/login/github</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>GitHub<span style="color:#070;font-weight:bold">&lt;/a&gt;</span>
+                <span style="color:#070;font-weight:bold">&lt;/li&gt;</span>
+                <span style="color:#070;font-weight:bold">&lt;li&gt;</span>
+                    <span style="color:#070;font-weight:bold">&lt;a</span> <span style="color:#b48">href</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/auth/login/google</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>Google<span style="color:#070;font-weight:bold">&lt;/a&gt;</span>
+                <span style="color:#070;font-weight:bold">&lt;/li&gt;</span>
+            <span style="color:#070;font-weight:bold">&lt;/ul&gt;</span>
+        <span style="color:#070;font-weight:bold">&lt;/div&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;/div&gt;</span>
+<span style="color:#070;font-weight:bold">&lt;/div&gt;</span>
+<span style="color:#070;font-weight:bold">&lt;/body&gt;</span>
+<span style="color:#070;font-weight:bold">&lt;/html&gt;</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2 has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-204">
+<h3 id="_upload_html_avatar">9.3. upload.html Avatar</h3>
+<div class="listingblock has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/chatapp/templates/upload.html-0">
+<div class="title">/template/upload.html</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="html"><span style="color:#34b">&lt;!DOCTYPE html&gt;</span>
+<span style="color:#070;font-weight:bold">&lt;html</span> <span style="color:#b48">lang</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">en</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>
+<span style="color:#070;font-weight:bold">&lt;head&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;meta</span> <span style="color:#b48">charset</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">UTF-8</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;title&gt;</span>Upload Avatar<span style="color:#070;font-weight:bold">&lt;/title&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;link</span> <span style="color:#b48">rel</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">stylesheet</span><span style="color:#710">&quot;</span></span> <span style="color:#b48">href</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>
+<span style="color:#070;font-weight:bold">&lt;/head&gt;</span>
+<span style="color:#070;font-weight:bold">&lt;body&gt;</span>
+<span style="color:#070;font-weight:bold">&lt;div</span> <span style="color:#b48">class</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">container</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;div</span> <span style="color:#b48">class</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">page-header</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>
+        <span style="color:#070;font-weight:bold">&lt;h1&gt;</span>Upload picture<span style="color:#070;font-weight:bold">&lt;/h1&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;/div&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;form</span> <span style="color:#b48">role</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">form</span><span style="color:#710">&quot;</span></span> <span style="color:#b48">action</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/uploader</span><span style="color:#710">&quot;</span></span> <span style="color:#b48">enctype</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">multipart/form-data</span><span style="color:#710">&quot;</span></span>
+          <span style="color:#b48">method</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">post</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>
+        <span style="color:#070;font-weight:bold">&lt;input</span> <span style="color:#b48">type</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">hidden</span><span style="color:#710">&quot;</span></span> <span style="color:#b48">name</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">userid</span><span style="color:#710">&quot;</span></span> <span style="color:#b48">value</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">{{.UserData.userid}}</span><span style="color:#710">&quot;</span></span> <span style="color:#070;font-weight:bold">/&gt;</span>
+        <span style="color:#070;font-weight:bold">&lt;div</span> <span style="color:#b48">class</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">form-group</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>
+            <span style="color:#070;font-weight:bold">&lt;label</span> <span style="color:#b48">for</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">avatarFile</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span>Select file<span style="color:#070;font-weight:bold">&lt;/label&gt;</span>
+            <span style="color:#070;font-weight:bold">&lt;input</span> <span style="color:#b48">type</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">file</span><span style="color:#710">&quot;</span></span> <span style="color:#b48">name</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">avatarFile</span><span style="color:#710">&quot;</span></span> <span style="color:#070;font-weight:bold">/&gt;</span>
+        <span style="color:#070;font-weight:bold">&lt;/div&gt;</span>
+        <span style="color:#070;font-weight:bold">&lt;input</span> <span style="color:#b48">type</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">submit</span><span style="color:#710">&quot;</span></span> <span style="color:#b48">value</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Upload</span><span style="color:#710">&quot;</span></span> <span style="color:#b48">class</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">btn</span><span style="color:#710">&quot;</span></span> <span style="color:#070;font-weight:bold">/&gt;</span>
+    <span style="color:#070;font-weight:bold">&lt;/form&gt;</span>
+<span style="color:#070;font-weight:bold">&lt;/div&gt;</span>
+<span style="color:#070;font-weight:bold">&lt;/body&gt;</span>
+<span style="color:#070;font-weight:bold">&lt;/html&gt;</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2 has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-212">
+<h3 id="_trace_go_package_trace">9.4. trace.go (package trace)</h3>
+<div class="listingblock has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/chatapp/trace/tracer.go-0">
+<div class="title">/trace/tracer.go (package trace)</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="go"><span style="color:#080;font-weight:bold">package</span> trace
+
+<span style="color:#080;font-weight:bold">import</span> (
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">fmt</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">io</span><span style="color:#710">&quot;</span></span>
+)
+
+
+<span style="color:#777">// Tracer is the interface that describes an object capable of</span>
+<span style="color:#777">// tracing events throughout code.</span>
+<span style="color:#080;font-weight:bold">type</span> Tracer <span style="color:#080;font-weight:bold">interface</span> {
+        Trace(...<span style="color:#080;font-weight:bold">interface</span>{})
+}
+
+<span style="color:#080;font-weight:bold">func</span> New(w io.Writer) Tracer  {
+        <span style="color:#080;font-weight:bold">return</span> &amp;tracer{out: w}
+}
+
+<span style="color:#777">// New creates a new Tracer that will write the output to</span>
+<span style="color:#777">// the specified io.Writer.</span>
+<span style="color:#777">// implement tracer interface.</span>
+<span style="color:#777">// New above we cannot return interface, we must return the concrete type</span>
+<span style="color:#777">// we are not exported but it return at the Tracer interface New. this is fine</span>
+<span style="color:#080;font-weight:bold">type</span> tracer <span style="color:#080;font-weight:bold">struct</span> {
+        out io.Writer
+}
+
+<span style="color:#777">// tracer is a Tracer that writes to an</span>
+<span style="color:#777">// io.Writer.</span>
+<span style="color:#080;font-weight:bold">func</span> (t *tracer) Trace(a ...<span style="color:#080;font-weight:bold">interface</span>{}) {
+        fmt.Fprint(t.out, a...)
+        fmt.Fprintln(t.out)
+}
+
+
+<span style="color:#777">// For user not used any tracer we set as nilTracer which is to do nothing,</span>
+<span style="color:#777">// then we initialize this to factory method in the room</span>
+<span style="color:#080;font-weight:bold">type</span> nilTracer <span style="color:#080;font-weight:bold">struct</span> {}
+
+<span style="color:#080;font-weight:bold">func</span> (n *nilTracer) Trace(...<span style="color:#080;font-weight:bold">interface</span>{}) {}
+
+<span style="color:#080;font-weight:bold">func</span> Off() Tracer  {
+        <span style="color:#080;font-weight:bold">return</span> &amp;nilTracer{}
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2 has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-220">
+<h3 id="_tracer_test_go_package_trace">9.5. tracer_test.go (package trace)</h3>
+<div class="listingblock has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/chatapp/trace/tracer_test.go-0">
+<div class="title">/trace/tracer_test.go (package trace)</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="go"><span style="color:#080;font-weight:bold">package</span> trace
+
+<span style="color:#080;font-weight:bold">import</span> (
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">bytes</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">testing</span><span style="color:#710">&quot;</span></span>
+)
+
+<span style="color:#080;font-weight:bold">func</span> TestNew(t *testing.T)  {
+        <span style="color:#080;font-weight:bold">var</span> buf bytes.Buffer
+
+
+        tracer := New(&amp;buf)
+        <span style="color:#080;font-weight:bold">if</span> tracer == <span style="color:#069">nil</span> {
+                t.Error(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Return from New should not be nil</span><span style="color:#710">&quot;</span></span>)
+        } <span style="color:#080;font-weight:bold">else</span> {
+                tracer.Trace(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Hello trace package.</span><span style="color:#710">&quot;</span></span>)
+                <span style="color:#080;font-weight:bold">if</span> buf.String() != <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Hello trace package.</span><span style="color:#b0b">\n</span><span style="color:#710">&quot;</span></span> {
+                        t.Errorf(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Trace should not write '%s'.</span><span style="color:#710">&quot;</span></span>, buf.String())
+                }
+        }
+}
+
+<span style="color:#080;font-weight:bold">func</span> TestOff(t *testing.T)  {
+        <span style="color:#080;font-weight:bold">var</span> silentTracer Tracer = Off()
+        silentTracer.Trace(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Something</span><span style="color:#710">&quot;</span></span>)
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2 has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-229">
+<h3 id="_auth_go_package_main">9.6. auth.go (package main)</h3>
+<div class="listingblock has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/chatapp/auth.go-0">
+<div class="title">auth.go (package main)</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="go"><span style="color:#080;font-weight:bold">package</span> main
+
+<span style="color:#080;font-weight:bold">import</span> (
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">crypto/md5</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">fmt</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">github.com/stretchr/gomniauth</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">github.com/stretchr/objx</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">io</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">log</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">net/http</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">strings</span><span style="color:#710">&quot;</span></span>
+        gomniauthcommon <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">github.com/stretchr/gomniauth/common</span><span style="color:#710">&quot;</span></span>
+)
+
+
+
+<span style="color:#080;font-weight:bold">type</span> ChatUser <span style="color:#080;font-weight:bold">interface</span> {
+        UniqueID() <span style="color:#0a8;font-weight:bold">string</span>
+        AvatarURL() <span style="color:#0a8;font-weight:bold">string</span>
+}
+
+<span style="color:#777">// It also makes use of a very interesting feature in Go: type embedding.</span>
+<span style="color:#777">// We actually embedded the gomniauth/common.User interface type,</span>
+<span style="color:#777">// which means that our struct interface implements the interface automatically.</span>
+<span style="color:#080;font-weight:bold">type</span> chatUser <span style="color:#080;font-weight:bold">struct</span> {
+        gomniauthcommon.User
+        uniqueID <span style="color:#0a8;font-weight:bold">string</span>
+}
+
+<span style="color:#080;font-weight:bold">func</span> (u chatUser) UniqueID() <span style="color:#0a8;font-weight:bold">string</span> {
+        <span style="color:#080;font-weight:bold">return</span> u.uniqueID
+}
+
+
+<span style="color:#080;font-weight:bold">type</span> authHandler <span style="color:#080;font-weight:bold">struct</span> {
+        next http.Handler
+}
+
+<span style="color:#080;font-weight:bold">func</span> (h *authHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+        cookie, err := r.Cookie(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">auth</span><span style="color:#710">&quot;</span></span>)
+
+        <span style="color:#080;font-weight:bold">if</span> err == http.ErrNoCookie || cookie.Value == <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span> {
+                <span style="color:#777">// not authenticated</span>
+                w.Header().Set(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Location</span><span style="color:#710">&quot;</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/login</span><span style="color:#710">&quot;</span></span>)
+                w.WriteHeader(http.StatusTemporaryRedirect)
+                <span style="color:#080;font-weight:bold">return</span>
+        }
+
+        <span style="color:#080;font-weight:bold">if</span> err != <span style="color:#069">nil</span> {
+                <span style="color:#777">// some other error</span>
+                http.Error(w, err.Error(), http.StatusInternalServerError)
+                <span style="color:#080;font-weight:bold">return</span>
+        }
+
+        <span style="color:#777">// success - call the next handler</span>
+        h.next.ServeHTTP(w, r)
+}
+
+<span style="color:#777">// is is decorator patter, we wrap the handler object anc chain it to next.</span>
+<span style="color:#777">// called by main.go on route / to execute this ServeHTTP and then if success return to the ServeHTTP on the wrapped object</span>
+<span style="color:#080;font-weight:bold">func</span> MustAuth(handler http.Handler) http.Handler {
+        <span style="color:#080;font-weight:bold">return</span> &amp;authHandler{next: handler}
+}
+
+<span style="color:#777">// loginHandler handles the third-party login process.</span>
+<span style="color:#777">// format: /auth/{action}/{provider}</span>
+<span style="color:#777">// We do two main things here. First, we use the gomniauth.Provider function to get the provider object</span>
+<span style="color:#777">// that matches the object</span>
+<span style="color:#777">// specified in the URL (such as google or github).</span>
+<span style="color:#777">// Then, we use the GetBeginAuthURL method to get the location where</span>
+<span style="color:#777">// we must send users to in order to start the authorization process.</span>
+<span style="color:#080;font-weight:bold">func</span> loginHandler(w http.ResponseWriter, r *http.Request) {
+        segs := strings.Split(r.URL.Path, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/</span><span style="color:#710">&quot;</span></span>)
+
+        fmt.Println(<span style="color:#369;font-weight:bold">len</span>(segs))
+        <span style="color:#080;font-weight:bold">if</span> <span style="color:#369;font-weight:bold">len</span>(segs) &lt; <span style="color:#00D">4</span> {
+                w.WriteHeader(http.StatusNotFound)
+                fmt.Fprintln(w, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Sorry the page your looking for is not found</span><span style="color:#710">&quot;</span></span>)
+                <span style="color:#080;font-weight:bold">return</span>
+        }
+
+        action := segs[<span style="color:#00D">2</span>]
+        provider := segs[<span style="color:#00D">3</span>]
+        <span style="color:#080;font-weight:bold">switch</span> action {
+
+        <span style="color:#080;font-weight:bold">case</span> <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">login</span><span style="color:#710">&quot;</span></span>:
+
+                provider, err := gomniauth.Provider(provider)
+                <span style="color:#080;font-weight:bold">if</span> err != <span style="color:#069">nil</span> {
+                        http.Error(w, fmt.Sprintf(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Error when trying to get provider %s: %s</span><span style="color:#710">&quot;</span></span>, provider, err),
+                                http.StatusBadRequest)
+                        <span style="color:#080;font-weight:bold">return</span>
+                }
+
+                loginUrl, err := provider.GetBeginAuthURL(<span style="color:#069">nil</span>, <span style="color:#069">nil</span>)
+                <span style="color:#080;font-weight:bold">if</span> err != <span style="color:#069">nil</span> {
+                        http.Error(w, fmt.Sprintf(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Error when trying to GetBeginAuthURL for %s:%s</span><span style="color:#710">&quot;</span></span>, provider, err),
+                                http.StatusInternalServerError)
+                        <span style="color:#080;font-weight:bold">return</span>
+                }
+
+                w.Header().Set(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Location</span><span style="color:#710">&quot;</span></span>, loginUrl)
+                w.WriteHeader(http.StatusTemporaryRedirect)
+
+        <span style="color:#080;font-weight:bold">case</span> <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">callback</span><span style="color:#710">&quot;</span></span>:
+
+                provider, err := gomniauth.Provider(provider)
+                <span style="color:#080;font-weight:bold">if</span> err != <span style="color:#069">nil</span> {
+                        http.Error(w, fmt.Sprintf(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Error when trying to complete auth for %s: %s</span><span style="color:#710">&quot;</span></span>, provider, err),
+                                http.StatusInternalServerError)
+                        <span style="color:#080;font-weight:bold">return</span>
+                }
+
+                cred, err := provider.CompleteAuth(objx.MustFromURLQuery(r.URL.RawQuery))
+                <span style="color:#080;font-weight:bold">if</span> err != <span style="color:#069">nil</span> {
+                        http.Error(w, fmt.Sprintf(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Error when trying to complete auth for %s: %s</span><span style="color:#710">&quot;</span></span>, provider, err),
+                                http.StatusInternalServerError)
+                        <span style="color:#080;font-weight:bold">return</span>
+                }
+
+                <span style="color:#777">/* Change to chat user
+                usr, err := provider.GetUser(cred)
+                if err != nil {
+                        http.Error(w, fmt.Sprintf(&quot;Error when trying to get user from %s: %s&quot;,
+                                provider, err), http.StatusInternalServerError)
+                        return
+                }
+                */</span>
+
+                <span style="color:#777">// So now is dynamic implementation of get user gravatar</span>
+                usr, err := provider.GetUser(cred)
+                <span style="color:#080;font-weight:bold">if</span> err != <span style="color:#069">nil</span> {
+                        log.Fatalln(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Error when trying to get user from</span><span style="color:#710">&quot;</span></span>, provider, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">-</span><span style="color:#710">&quot;</span></span>, err)
+                }
+                chatUser := &amp;chatUser{User: usr}
+                m := md5.New()
+                io.WriteString(m, strings.ToLower(usr.Email()))
+                chatUser.uniqueID = fmt.Sprintf(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">%x</span><span style="color:#710">&quot;</span></span>, m.Sum(<span style="color:#069">nil</span>))
+                avatarURL, err := avatars.GetAvatarURL(chatUser)
+                <span style="color:#080;font-weight:bold">if</span> err != <span style="color:#069">nil</span> {
+                        log.Fatalln(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Error when trying to GetAvatarURL</span><span style="color:#710">&quot;</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">-</span><span style="color:#710">&quot;</span></span>, err)
+                }
+
+                fmt.Println(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">usr</span><span style="color:#710">&quot;</span></span>, usr)
+
+                <span style="color:#777">// Here, we have hashed the e-mail address and stored the resulting value in the userid field at the point at which the user logs in.</span>
+                <span style="color:#777">// From now on, we can use this value in our Gravatar code instead of hashing the e-mail address for every message.</span>
+
+                <span style="color:#777">/* we chance it to cache in cookie, get from chatuser
+                m := md5.New()
+                io.WriteString(m, strings.ToLower(usr.Email()))
+                userid := fmt.Sprintf(&quot;%x&quot;, m.Sum(nil))
+                */</span>
+                authCookieValue := objx.New(<span style="color:#080;font-weight:bold">map</span>[<span style="color:#0a8;font-weight:bold">string</span>]<span style="color:#080;font-weight:bold">interface</span>{}{
+                        <span style="color:#777">//&quot;userid&quot;: userid,</span>
+                        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">userid</span><span style="color:#710">&quot;</span></span>: chatUser.uniqueID,
+                        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">name</span><span style="color:#710">&quot;</span></span>:       usr.Name(),
+                        <span style="color:#777">//&quot;avatar_url&quot;: usr.AvatarURL(),</span>
+                        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">avatar_url</span><span style="color:#710">&quot;</span></span>: avatarURL,
+                        <span style="color:#777">// &quot;email&quot;:      usr.Email(), no longer need</span>
+                }).MustBase64()
+
+                http.SetCookie(w, &amp;http.Cookie{
+                        Name:  <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">auth</span><span style="color:#710">&quot;</span></span>,
+                        Value: authCookieValue,
+                        Path:  <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/</span><span style="color:#710">&quot;</span></span>,
+                })
+
+                w.Header().Set(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Location</span><span style="color:#710">&quot;</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/chat</span><span style="color:#710">&quot;</span></span>)
+                w.WriteHeader(http.StatusTemporaryRedirect)
+
+        <span style="color:#080;font-weight:bold">default</span>:
+                w.WriteHeader(http.StatusNotFound)
+                fmt.Fprintf(w, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Auth action %s not supported</span><span style="color:#710">&quot;</span></span>, action)
+        }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2 has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-237">
+<h3 id="_avatar_go_package_main">9.7. avatar.go (package main)</h3>
+<div class="listingblock has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/chatapp/avatar.go-0">
+<div class="title">avatar.go (package main)</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="go"><span style="color:#080;font-weight:bold">package</span> main
+
+<span style="color:#080;font-weight:bold">import</span> (
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">errors</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">io/ioutil</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">path</span><span style="color:#710">&quot;</span></span>
+)
+
+<span style="color:#777">// ErrNoAvatar is the error that is returned when the</span>
+<span style="color:#777">// Avatar instance is unable to provide an avatar URL.</span>
+<span style="color:#080;font-weight:bold">var</span> ErrNoAvatarURL = errors.New(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">chat: Unable to get an avatar  URL.</span><span style="color:#710">&quot;</span></span>)
+
+<span style="color:#777">// Avatar represents types capable of representing</span>
+<span style="color:#777">// user profile pictures.</span>
+
+<span style="color:#080;font-weight:bold">type</span> Avatar <span style="color:#080;font-weight:bold">interface</span> {
+        <span style="color:#777">// GetAvatarURL gets the avatar URL for the specified client,</span>
+        <span style="color:#777">// or returns an error if something goes wrong.</span>
+        <span style="color:#777">// ErrNoAvatarURL is returned if the object is unable to get</span>
+        <span style="color:#777">// a URL for the specified client.</span>
+        GetAvatarURL(u ChatUser) (<span style="color:#0a8;font-weight:bold">string</span>, <span style="color:#0a8;font-weight:bold">error</span>)
+}
+
+<span style="color:#080;font-weight:bold">type</span> AuthAvatar <span style="color:#080;font-weight:bold">struct</span>{}
+
+<span style="color:#777">//create a handy variable called UseAuthAvatar that has the AuthAvatar type but which remains of nil value.</span>
+<span style="color:#777">// We can later assign the UseAuthAvatar variable to any field looking for an Avatar interface type.</span>
+<span style="color:#080;font-weight:bold">var</span> UseAuthAvatar AuthAvatar
+
+
+<span style="color:#080;font-weight:bold">type</span> TryAvatars []Avatar
+
+<span style="color:#080;font-weight:bold">func</span> (a TryAvatars) GetAvatarURL(u ChatUser) (<span style="color:#0a8;font-weight:bold">string</span>, <span style="color:#0a8;font-weight:bold">error</span>) {
+        <span style="color:#080;font-weight:bold">for</span> _, avatar := <span style="color:#080;font-weight:bold">range</span> a {
+                <span style="color:#080;font-weight:bold">if</span> url, err := avatar.GetAvatarURL(u); err == <span style="color:#069">nil</span> {
+                        <span style="color:#080;font-weight:bold">return</span> url, <span style="color:#069">nil</span>
+                }
+        }
+        <span style="color:#080;font-weight:bold">return</span> <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>, ErrNoAvatarURL
+}
+
+
+<span style="color:#777">//Normally, the receiver of a method (the type defined in parentheses before the name)</span>
+<span style="color:#777">// will be assigned to a variable so that it can be accessed in the body of the method.</span>
+<span style="color:#777">// Since, in our case, we assume the object can have nil value, we can omit a variable</span>
+<span style="color:#777">// name to tell Go to throw away the reference.</span>
+<span style="color:#777">// This serves as an added reminder to ourselves that we should avoid using it.</span>
+<span style="color:#777">//func (AuthAvatar) GetAvatarURL(c *client) (string, error) {</span>
+<span style="color:#080;font-weight:bold">func</span> (AuthAvatar) GetAvatarURL(u ChatUser) (<span style="color:#0a8;font-weight:bold">string</span>, <span style="color:#0a8;font-weight:bold">error</span>) {
+        <span style="color:#777">//if url, ok := c.userData[&quot;avatar_url&quot;]; ok {</span>
+        <span style="color:#777">//        if urlStr, ok := url.(string); ok {</span>
+        <span style="color:#777">//                return urlStr, nil</span>
+        <span style="color:#777">//        }</span>
+        <span style="color:#777">//}</span>
+        <span style="color:#777">//return &quot;&quot;, ErrNoAvatarURL</span>
+
+        <span style="color:#777">/*url, ok := c.userData[&quot;avatar_url&quot;]
+        if !ok {
+                return &quot;&quot;, ErrNoAvatarURL
+        }
+
+        urlStr, ok := url.(string)
+        if !ok {
+                return &quot;&quot;, ErrNoAvatarURL
+        }
+
+        return urlStr, nil */</span>
+
+        url := u.AvatarURL()
+        <span style="color:#080;font-weight:bold">if</span> <span style="color:#369;font-weight:bold">len</span>(url) == <span style="color:#00D">0</span> {
+                <span style="color:#080;font-weight:bold">return</span> <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>, ErrNoAvatarURL
+        }
+        <span style="color:#080;font-weight:bold">return</span> url, <span style="color:#069">nil</span>
+}
+
+<span style="color:#777">// We used the same pattern as we did for AuthAvatar:</span>
+<span style="color:#777">// we have an empty struct, a helpful UseGravatar variable, and the GetAvatarURL method implementation itself.</span>
+<span style="color:#777">// In this method, we follow Gravatar's guidelines to generate an MD5 hash from the e-mail address</span>
+<span style="color:#777">// (after we ensured it was lowercase) and append it to the hardcoded base URL using fmt.Sprintf.</span>
+<span style="color:#080;font-weight:bold">type</span> GravatarAvatar <span style="color:#080;font-weight:bold">struct</span>{}
+
+<span style="color:#080;font-weight:bold">var</span> UseGravatar GravatarAvatar
+
+<span style="color:#777">/*func (GravatarAvatar) GetAvatarURL(c *client) (string, error) {
+// change to use userId so no need to do hashing everytime here
+
+        userid, ok := c.userData[&quot;userid&quot;]
+        if !ok {
+                return &quot;&quot;, ErrNoAvatarURL
+        }
+
+        useridStr, ok := userid.(string)
+        if !ok {
+                return &quot;&quot;, ErrNoAvatarURL
+        }
+
+        return &quot;//www.gravatar.com/avatar/&quot; + useridStr, nil
+
+        //email, ok := c.userData[&quot;email&quot;]
+        //if !ok {
+        //        return &quot;&quot;, ErrNoAvatarURL
+        //}
+        //
+        //emailStr, ok := email.(string)
+        //if !ok {
+        //        return &quot;&quot;, ErrNoAvatarURL
+        //}
+        //
+        //m := md5.New()
+        //io.WriteString(m, strings.ToLower(emailStr))
+        //return fmt.Sprintf(&quot;//www.gravatar.com/avatar/%x&quot;, m.Sum(nil)), nil
+}
+ */</span>
+
+<span style="color:#777">// Note that we are using the ChatUser interface (with the starting letter in uppercase)</span>
+<span style="color:#777">// rather than our internal chatUser implementation struct after all,</span>
+<span style="color:#777">// we want to be flexible about the types our GetAvatarURL methods accept.</span>
+<span style="color:#080;font-weight:bold">func</span> (GravatarAvatar) GetAvatarURL(u ChatUser) (<span style="color:#0a8;font-weight:bold">string</span>, <span style="color:#0a8;font-weight:bold">error</span>) {
+
+        <span style="color:#080;font-weight:bold">return</span> <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">//www.gravatar.com/avatar/</span><span style="color:#710">&quot;</span></span> + u.UniqueID(), <span style="color:#069">nil</span>
+}
+
+
+<span style="color:#080;font-weight:bold">type</span> FileSystemAvatar <span style="color:#080;font-weight:bold">struct</span>{}
+<span style="color:#080;font-weight:bold">var</span> UseFileSystemAvatar FileSystemAvatar
+<span style="color:#777">/*
+func (FileSystemAvatar) GetAvatarURL(c *client) (string, error) {
+        if userid, ok := c.userData[&quot;userid&quot;]; ok {
+                if useridStr, ok := userid.(string); ok {
+                        files, err := ioutil.ReadDir(&quot;avatars&quot;)
+                        if err != nil {
+                                return &quot;&quot;, ErrNoAvatarURL
+                        }
+                        for _, file := range files {
+                                if file.IsDir() {
+                                        continue
+                                }
+                                if match, _ := path.Match(useridStr+&quot;*&quot;, file.Name());
+                                        match {
+                                        return &quot;/avatars/&quot; + file.Name(), nil
+                                }
+                        }
+                }
+        }
+        return &quot;&quot;, ErrNoAvatarURL
+}
+*/</span>
+
+<span style="color:#777">/// The key change here is that we no longer access the userData field on the client,</span>
+<span style="color:#777">// and just call UniqueID directly on the ChatUser interface instead.</span>
+<span style="color:#080;font-weight:bold">func</span> (FileSystemAvatar) GetAvatarURL(u ChatUser) (<span style="color:#0a8;font-weight:bold">string</span>, <span style="color:#0a8;font-weight:bold">error</span>) {
+        <span style="color:#080;font-weight:bold">if</span> files, err := ioutil.ReadDir(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">avatars</span><span style="color:#710">&quot;</span></span>); err == <span style="color:#069">nil</span> {
+                <span style="color:#080;font-weight:bold">for</span> _, file := <span style="color:#080;font-weight:bold">range</span> files {
+                        <span style="color:#080;font-weight:bold">if</span> file.IsDir() {
+                                <span style="color:#080;font-weight:bold">continue</span>
+                        }
+                        <span style="color:#080;font-weight:bold">if</span> match, _ := path.Match(u.UniqueID()+<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">*</span><span style="color:#710">&quot;</span></span>, file.Name()); match {
+                                <span style="color:#080;font-weight:bold">return</span> <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/avatars/</span><span style="color:#710">&quot;</span></span> + file.Name(), <span style="color:#069">nil</span>
+                        }
+                }
+        }
+        <span style="color:#080;font-weight:bold">return</span> <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>, ErrNoAvatarURL
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2 has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-245">
+<h3 id="_avatar_test_go_package_main">9.8. avatar_test.go (package main)</h3>
+<div class="listingblock has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/chatapp/avatar_test.go-0">
+<div class="title">avatar_test.go (package main)</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="go"><span style="color:#080;font-weight:bold">package</span> main
+
+<span style="color:#080;font-weight:bold">import</span> (
+        gomniauthtest <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">github.com/stretchr/gomniauth/test</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">io/ioutil</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">os</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">path</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">testing</span><span style="color:#710">&quot;</span></span>
+)
+
+<span style="color:#777">// 1st implementation</span>
+<span style="color:#777">/*
+func TestAuthAvatar(t *testing.T) {
+        var authAvatar AuthAvatar
+        client := new(client)
+        url, err := authAvatar.GetAvatarURL(client)
+        if err != ErrNoAvatarURL {
+                t.Error(&quot;AuthAvatar.GetAvatarURL should return ErrNoAvatarURL when no value present&quot;)
+        }
+        // set a value
+        testUrl := &quot;http://url-to-gravatar/&quot;
+        client.userData = map[string]interface{}{&quot;avatar_url&quot;: testUrl}
+        url, err = authAvatar.GetAvatarURL(client)
+        if err != nil {
+                t.Error(&quot;AuthAvatar.GetAvatarURL should return no error when value present&quot;)
+        }
+        if url != testUrl {
+                t.Error(&quot;AuthAvatar.GetAvatarURL should return correct URL&quot;)
+        }
+}
+*/</span>
+
+<span style="color:#777">// 1s implementation we change to gomniauth user</span>
+<span style="color:#080;font-weight:bold">func</span> TestAuthAvatar(t *testing.T)  {
+        <span style="color:#080;font-weight:bold">var</span> authAvatar AuthAvatar
+        testUser := &amp;gomniauthtest.TestUser{}
+        testUser.On(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">AvatarURL</span><span style="color:#710">&quot;</span></span>).Return(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>, ErrNoAvatarURL)
+        testChatUser := &amp;chatUser{User: testUser}
+        url, err := authAvatar.GetAvatarURL(testChatUser)
+        <span style="color:#080;font-weight:bold">if</span> err != ErrNoAvatarURL {
+                t.Error(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">AuthAvatar.GetAvatarURL should return ErrNoAvatarURL when no value present</span><span style="color:#710">&quot;</span></span>)
+        }
+        testUrl := <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">http://url-to-gravatar/</span><span style="color:#710">&quot;</span></span>
+        testUser = &amp;gomniauthtest.TestUser{}
+        testChatUser.User = testUser
+        testUser.On(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">AvatarURL</span><span style="color:#710">&quot;</span></span>).Return(testUrl, <span style="color:#069">nil</span>)
+        url, err = authAvatar.GetAvatarURL(testChatUser)
+        <span style="color:#080;font-weight:bold">if</span> err != <span style="color:#069">nil</span> {
+                t.Error(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">AuthAvatar.GetAvatarURL should return no error when value present</span><span style="color:#710">&quot;</span></span>)
+        }
+        <span style="color:#080;font-weight:bold">if</span> url != testUrl {
+                t.Error(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">AuthAvatar.GetAvatarURL should return correct URL</span><span style="color:#710">&quot;</span></span>)
+        }
+}
+
+
+<span style="color:#777">// 2nd implementation</span>
+<span style="color:#777">/*func TestGravatarAvatar(t *testing.T) {
+        var gravatarAvatar GravatarAvatar
+        client := new(client)
+        client.userData = map[string]interface{}{&quot;userid&quot;: &quot;0bc83cb571cd1c50ba6f3e8a78ef1346&quot;}
+        url, err := gravatarAvatar.GetAvatarURL(client)
+        if err != nil {
+                t.Error(&quot;GravatarAvatar.GetAvatarURL should not return an error&quot;)
+        }
+        if url != &quot;//www.gravatar.com/avatar/0bc83cb571cd1c50ba6f3e8a78ef1346&quot; {
+                t.Errorf(&quot;GravatarAvatar.GetAvatarURL wrongly returned %s&quot;, url)
+        }
+}
+*/</span>
+
+<span style="color:#080;font-weight:bold">func</span> TestGravatarAvatar(t *testing.T) {
+        <span style="color:#080;font-weight:bold">var</span> gravatarAvatar GravatarAvatar
+        user := &amp;chatUser{uniqueID: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">abc</span><span style="color:#710">&quot;</span></span>}
+        url, err := gravatarAvatar.GetAvatarURL(user)
+        <span style="color:#080;font-weight:bold">if</span> err != <span style="color:#069">nil</span> {
+                t.Error(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">GravatarAvatar.GetAvatarURL should not return an error</span><span style="color:#710">&quot;</span></span>)
+        }
+        <span style="color:#080;font-weight:bold">if</span> url != <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">//www.gravatar.com/avatar/abc</span><span style="color:#710">&quot;</span></span> {
+                t.Errorf(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">GravatarAvatar.GetAvatarURL wrongly returned %s</span><span style="color:#710">&quot;</span></span>, url)
+        }
+}
+
+<span style="color:#777">// 3rd implementation system file avatar</span>
+<span style="color:#777">/*func TestFileSystemAvatar(t *testing.T) {
+
+        filename := filepath.Join(&quot;avatars&quot;, &quot;abc.jpg&quot;)
+        ioutil.WriteFile(filename, []byte{}, 0777)
+        defer os.Remove(filename)
+        var fileSystemAvatar FileSystemAvatar
+        client := new(client)
+        client.userData = map[string]interface{}{&quot;userid&quot;: &quot;abc&quot;}
+        url, err := fileSystemAvatar.GetAvatarURL(client)
+        if err != nil {
+                t.Error(&quot;FileSystemAvatar.GetAvatarURL should not return an error&quot;)
+        }
+        if url != &quot;/avatars/abc.jpg&quot; {
+                t.Errorf(&quot;FileSystemAvatar.GetAvatarURL wrongly returned %s&quot;, url)
+        }
+}
+*/</span>
+
+<span style="color:#080;font-weight:bold">func</span> TestFileSystemAvatar(t *testing.T) {
+        <span style="color:#777">// make a test avatar file</span>
+        filename := path.Join(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">avatars</span><span style="color:#710">&quot;</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">abc.jpg</span><span style="color:#710">&quot;</span></span>)
+        ioutil.WriteFile(filename, []<span style="color:#0a8;font-weight:bold">byte</span>{}, <span style="color:#40E">0777</span>)
+        <span style="color:#080;font-weight:bold">defer</span> <span style="color:#080;font-weight:bold">func</span>() { os.Remove(filename) }()
+        <span style="color:#080;font-weight:bold">var</span> fileSystemAvatar FileSystemAvatar
+        user := &amp;chatUser{uniqueID: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">abc</span><span style="color:#710">&quot;</span></span>}
+        url, err := fileSystemAvatar.GetAvatarURL(user)
+        <span style="color:#080;font-weight:bold">if</span> err != <span style="color:#069">nil</span> {
+                t.Error(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">FileSystemAvatar.GetAvatarURL should not return an error</span><span style="color:#710">&quot;</span></span>)
+        }
+        <span style="color:#080;font-weight:bold">if</span> url != <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/avatars/abc.jpg</span><span style="color:#710">&quot;</span></span> {
+                t.Errorf(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">FileSystemAvatar.GetAvatarURL wrongly returned %s</span><span style="color:#710">&quot;</span></span>, url)
+        }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2 has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-253">
+<h3 id="_message_go_package_main">9.9. message.go (package main)</h3>
+<div class="listingblock has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/chatapp/message.go-0">
+<div class="title">message.go (package main)</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="go"><span style="color:#080;font-weight:bold">package</span> main
+
+<span style="color:#080;font-weight:bold">import</span> <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">time</span><span style="color:#710">&quot;</span></span>
+
+<span style="color:#777">// message represents a single message</span>
+<span style="color:#080;font-weight:bold">type</span> message <span style="color:#080;font-weight:bold">struct</span> {
+        Name      <span style="color:#0a8;font-weight:bold">string</span>
+        Message   <span style="color:#0a8;font-weight:bold">string</span> <span style="color:#777">// auto encapsulated on readJson</span>
+        When      time.Time
+        AvatarURL <span style="color:#0a8;font-weight:bold">string</span>
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2 has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-261">
+<h3 id="_upload_go_package_main">9.10. upload.go (package main)</h3>
+<div class="listingblock has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/chatapp/upload.go-0">
+<div class="title">upload.go (package main)</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="go"><span style="color:#080;font-weight:bold">package</span> main
+
+<span style="color:#080;font-weight:bold">import</span> (
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">io</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">io/ioutil</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">net/http</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">path</span><span style="color:#710">&quot;</span></span>
+)
+
+<span style="color:#777">// Here, first uploaderHandler uses the FormValue method in http.Request to get the user ID that we placed in the hidden input in our HTML form.</span>
+<span style="color:#777">// Then, it gets an io.Reader type capable of reading the uploaded bytes by calling req.FormFile, which returns three arguments.</span>
+<span style="color:#777">// The first argument represents the file itself with the multipart.File interface type, which is also io.Reader.</span>
+<span style="color:#777">// The second is a multipart.FileHeader object that contains the metadata about the file,</span>
+<span style="color:#777">// such as the filename. And finally, the third argument is an error that we hope will have a nil value.</span>
+<span style="color:#777">// We then use the ioutil.WriteFile method to create a new file in the avatars folder.</span>
+<span style="color:#777">// We use userid in the filename to associate the image with the correct user, much in the same way as Gravatar does.</span>
+<span style="color:#777">// The 0777 value specifies that the new file we create should have complete file permissions,</span>
+<span style="color:#777">// which is a good default setting if you're not sure what other permissions should be set.</span>
+<span style="color:#080;font-weight:bold">func</span> uploaderHandler(w http.ResponseWriter, req *http.Request) {
+        userId := req.FormValue(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">userid</span><span style="color:#710">&quot;</span></span>)
+        file, header, err := req.FormFile(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">avatarFile</span><span style="color:#710">&quot;</span></span>)
+        <span style="color:#080;font-weight:bold">if</span> err != <span style="color:#069">nil</span> {
+                http.Error(w, err.Error(), http.StatusInternalServerError)
+                <span style="color:#080;font-weight:bold">return</span>
+        }
+        data, err := ioutil.ReadAll(file)
+        <span style="color:#080;font-weight:bold">if</span> err != <span style="color:#069">nil</span> {
+                http.Error(w, err.Error(), http.StatusInternalServerError)
+                <span style="color:#080;font-weight:bold">return</span>
+        }
+        filename := path.Join(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">avatars</span><span style="color:#710">&quot;</span></span>, userId+path.Ext(header.Filename))
+        err = ioutil.WriteFile(filename, data, <span style="color:#40E">0777</span>)
+        <span style="color:#080;font-weight:bold">if</span> err != <span style="color:#069">nil</span> {
+                http.Error(w, err.Error(), http.StatusInternalServerError)
+                <span style="color:#080;font-weight:bold">return</span>
+        }
+        io.WriteString(w, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Successful</span><span style="color:#710">&quot;</span></span>)
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2 has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-269">
+<h3 id="_room_go_package_main">9.11. room.go (package main)</h3>
+<div class="listingblock has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/chatapp/room.go-0">
+<div class="title">room.go (package main)</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="go"><span style="color:#080;font-weight:bold">package</span> main
+
+<span style="color:#080;font-weight:bold">import</span> (
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">github.com/gorilla/websocket</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">github.com/jonnyGit81/chat/chatapp/trace</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">github.com/stretchr/objx</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">log</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">net/http</span><span style="color:#710">&quot;</span></span>
+)
+
+<span style="color:#080;font-weight:bold">const</span> (
+        socketBufferSize  = <span style="color:#00D">1024</span>
+        messageBufferSize = <span style="color:#00D">256</span>
+)
+
+<span style="color:#777">// to upgrade HTTP Connection as Web Socket</span>
+<span style="color:#080;font-weight:bold">var</span> upgrader = &amp;websocket.Upgrader{ReadBufferSize: socketBufferSize, WriteBufferSize: socketBufferSize}
+
+<span style="color:#777">// We need a way for clients to join and leave rooms in order to ensure that the c.room.forward &lt;- msg code</span>
+<span style="color:#777">// in the preceding section actually forwards the message to all the clients.</span>
+<span style="color:#777">// To ensure that we are not trying to access the same data at the same time,</span>
+<span style="color:#777">// a sensible approach is to use two channels: one that will add a client to the room and another</span>
+<span style="color:#777">// that will remove it.</span>
+<span style="color:#080;font-weight:bold">type</span> room <span style="color:#080;font-weight:bold">struct</span> {
+        <span style="color:#777">// forward is a channel that holds incoming messages</span>
+        <span style="color:#777">// that should be forwarded to the other clients.</span>
+        <span style="color:#777">//forward chan []byte</span>
+
+        <span style="color:#777">//change to message struct</span>
+        forward <span style="color:#080;font-weight:bold">chan</span> *message
+
+        <span style="color:#777">// join is a channel for clients wishing to join the room</span>
+        join <span style="color:#080;font-weight:bold">chan</span> *client
+
+        <span style="color:#777">// leave is a channel for clients wishing to leave the room</span>
+        leave <span style="color:#080;font-weight:bold">chan</span> *client
+
+        <span style="color:#777">// clients holds all current clients in this room.</span>
+        <span style="color:#777">// If we were to access the map directly,</span>
+        <span style="color:#777">// it is possible that two Go routines running concurrently might try to modify the map at the same time</span>
+        <span style="color:#777">// resulting in corrupt memory or an unpredictable state.</span>
+        clients <span style="color:#080;font-weight:bold">map</span>[*client]<span style="color:#0a8;font-weight:bold">bool</span>
+
+        <span style="color:#777">//for loging trace</span>
+        tracer trace.Tracer
+
+        <span style="color:#777">// avatar is how avatar information will be obtained.</span>
+        avatar Avatar
+}
+
+<span style="color:#777">// Concurrency programming using idiomatic Go</span>
+<span style="color:#777">// Now we get to use an extremely powerful feature of Go's concurrency offerings—the select statement.</span>
+<span style="color:#777">// We can use select statements whenever we need to synchronize or modify shared memory,</span>
+<span style="color:#777">// or take different actions depending on the various activities within our channels.</span>
+<span style="color:#777">/*
+The preceding code will keep watching the three channels inside our room: join,
+leave, and forward. If a message is received on any of those channels,
+the select statement will run the code for that particular case.
+It is important to remember that it will only run one block of case code at a time.
+This is how we are able to synchronize to ensure that our r.clients map is only ever modified by one thing at a time.
+*/</span>
+<span style="color:#080;font-weight:bold">func</span> (r *room) run() {
+        <span style="color:#080;font-weight:bold">for</span> {
+                <span style="color:#080;font-weight:bold">select</span> {
+                <span style="color:#080;font-weight:bold">case</span> clientJoin := &lt;-r.join:
+                        <span style="color:#777">//joining room</span>
+                        r.clients[clientJoin] = <span style="color:#069">true</span>
+                        r.tracer.Trace(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">User joining room &lt;-r.join</span><span style="color:#710">&quot;</span></span>, clientJoin.userData[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">name</span><span style="color:#710">&quot;</span></span>].(<span style="color:#0a8;font-weight:bold">string</span>))
+                        <span style="color:#777">//fmt.Println(&quot;User joining room &lt;-r.join&quot;)</span>
+                <span style="color:#080;font-weight:bold">case</span> clientLeave := &lt;-r.leave:
+                        <span style="color:#777">//leaving room</span>
+                        <span style="color:#369;font-weight:bold">delete</span>(r.clients, clientLeave)
+                        <span style="color:#369;font-weight:bold">close</span>(clientLeave.send)
+                        r.tracer.Trace(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">User leave room &lt;-r.leave</span><span style="color:#710">&quot;</span></span>)
+                        <span style="color:#777">//fmt.Println(&quot;User leave room &lt;-r.leave&quot;)</span>
+                <span style="color:#080;font-weight:bold">case</span> msg := &lt;-r.forward:
+                        <span style="color:#777">// forward message to all clients</span>
+                        <span style="color:#080;font-weight:bold">for</span> c := <span style="color:#080;font-weight:bold">range</span> r.clients {
+                                <span style="color:#080;font-weight:bold">select</span> {
+                                <span style="color:#080;font-weight:bold">case</span> c.send &lt;- msg:
+                                        <span style="color:#777">// send message to client</span>
+                                        r.tracer.Trace(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Message received: </span><span style="color:#710">&quot;</span></span>, msg.Message)
+                                <span style="color:#080;font-weight:bold">default</span>:
+                                        <span style="color:#777">// failed to send, remove the client and close the client chanel</span>
+                                        <span style="color:#777">// for prevent blocking go routine that receiver never pickup</span>
+                                        <span style="color:#369;font-weight:bold">delete</span>(r.clients, c)
+                                        <span style="color:#369;font-weight:bold">close</span>(c.send)
+                                        r.tracer.Trace(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">User sending message c.send &lt;-msg Failed, going to close channel</span><span style="color:#710">&quot;</span></span>, c.send)
+                                        <span style="color:#777">//fmt.Println(&quot;User sending message c.send &lt;-msg Failed, going to close channel&quot;, c.send)</span>
+                                }
+                        }
+                }
+        }
+}
+
+<span style="color:#777">// Factory function</span>
+<span style="color:#777">// Update the newRoom function so that we can pass in an Avatar implementation for use;</span>
+<span style="color:#777">// we will just assign this implementation to the new field when we create our room instance:</span>
+<span style="color:#777">//func newRoom() *room {</span>
+<span style="color:#777">/* since every message we need to get avatar is expensive,
+ so we change the avatar to get only at login time and cache it into cookie.
+func newRoom(avatar Avatar) *room {
+        r := room{
+                //we change to message struct
+                //forward: make(chan []byte),
+                forward: make(chan *message),
+                join:    make(chan *client),
+                leave:   make(chan *client),
+                clients: make(map[*client]bool),
+                tracer:  trace.Off(),
+                avatar:  avatar,
+        }
+        return &amp;r
+}
+*/</span>
+
+<span style="color:#080;font-weight:bold">func</span> newRoom() *room {
+        r := room{
+                forward: <span style="color:#369;font-weight:bold">make</span>(<span style="color:#080;font-weight:bold">chan</span> *message),
+                join:    <span style="color:#369;font-weight:bold">make</span>(<span style="color:#080;font-weight:bold">chan</span> *client),
+                leave:   <span style="color:#369;font-weight:bold">make</span>(<span style="color:#080;font-weight:bold">chan</span> *client),
+                clients: <span style="color:#369;font-weight:bold">make</span>(<span style="color:#080;font-weight:bold">map</span>[*client]<span style="color:#0a8;font-weight:bold">bool</span>),
+                tracer:  trace.Off(),
+        }
+        <span style="color:#080;font-weight:bold">return</span> &amp;r
+}
+
+
+<span style="color:#777">// Turning a room into an HTTP handler</span>
+<span style="color:#777">// In order to use web sockets, we must upgrade the HTTP connection using the websocket.Upgrader type,</span>
+<span style="color:#777">// which is reusable so we need only create one. Then, when a request comes in via the ServeHTTP method,</span>
+<span style="color:#777">// we get the socket by calling the upgrader.Upgrade method.</span>
+<span style="color:#777">// All being well, we then create our client and pass it into the join channel for the current room.</span>
+<span style="color:#777">// We also defer the leaving operation for when the client is finished,</span>
+<span style="color:#777">// which will ensure everything is tidied up after a user goes away.</span>
+<span style="color:#080;font-weight:bold">func</span> (r *room) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+        socket, err := upgrader.Upgrade(w, req, <span style="color:#069">nil</span>)
+        <span style="color:#080;font-weight:bold">if</span> err != <span style="color:#069">nil</span> {
+                log.Fatal(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">ServeHTTP:</span><span style="color:#710">&quot;</span></span>, err)
+                <span style="color:#080;font-weight:bold">return</span>
+        }
+
+        authCookie, err := req.Cookie(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">auth</span><span style="color:#710">&quot;</span></span>)
+        <span style="color:#080;font-weight:bold">if</span> err != <span style="color:#069">nil</span> {
+                log.Fatal(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Failed to get auth cookie:</span><span style="color:#710">&quot;</span></span>, err)
+                <span style="color:#080;font-weight:bold">return</span>
+        }
+
+        client := &amp;client{
+                socket:   socket,
+                send:     <span style="color:#369;font-weight:bold">make</span>(<span style="color:#080;font-weight:bold">chan</span> *message, messageBufferSize),
+                room:     r,
+                userData: objx.MustFromBase64(authCookie.Value),
+        }
+
+        r.join &lt;- client
+
+        <span style="color:#080;font-weight:bold">defer</span> <span style="color:#080;font-weight:bold">func</span>() { r.leave &lt;- client }()
+
+        <span style="color:#777">// The write method for the client is then called as a Go routine</span>
+        <span style="color:#080;font-weight:bold">go</span> client.write()
+
+        <span style="color:#777">// Finally, we call the read method in the main thread,</span>
+        <span style="color:#777">// which will block operations (keeping the connection alive) until it's time to close it</span>
+        client.read()
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2 has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-277">
+<h3 id="_client_go_package_main">9.12. client.go (package main)</h3>
+<div class="listingblock has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/chatapp/client.go-0">
+<div class="title">client.go (package main)</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="go"><span style="color:#080;font-weight:bold">package</span> main
+
+<span style="color:#080;font-weight:bold">import</span> (
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">github.com/gorilla/websocket</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">time</span><span style="color:#710">&quot;</span></span>
+)
+
+<span style="color:#777">// client represents a single chatting user.</span>
+<span style="color:#080;font-weight:bold">type</span> client <span style="color:#080;font-weight:bold">struct</span> {
+        <span style="color:#777">// socket is the web socket for this client.</span>
+        socket *websocket.Conn
+        <span style="color:#777">// send is a channel on which messages are sent.</span>
+
+        <span style="color:#777">//we change to message struct</span>
+        <span style="color:#777">//send chan []byte</span>
+        send <span style="color:#080;font-weight:bold">chan</span> *message
+
+        <span style="color:#777">// room is the room this client is chatting in.</span>
+        room *room
+        <span style="color:#777">// userdata</span>
+        userData <span style="color:#080;font-weight:bold">map</span>[<span style="color:#0a8;font-weight:bold">string</span>]<span style="color:#080;font-weight:bold">interface</span>{}
+}
+
+<span style="color:#777">// The read method allows our client to read from the socket via the ReadMessage method,</span>
+<span style="color:#777">// continually sending any received messages to the forward channel on the room type.</span>
+<span style="color:#777">// If it encounters an error (such as 'the socket has died'),</span>
+<span style="color:#777">// the loop will break and the socket will be closed.</span>
+<span style="color:#080;font-weight:bold">func</span> (c *client) read() {
+        <span style="color:#080;font-weight:bold">for</span> {
+                <span style="color:#080;font-weight:bold">var</span> msg *message
+                err := c.socket.ReadJSON(&amp;msg)
+                <span style="color:#080;font-weight:bold">if</span> err != <span style="color:#069">nil</span> {
+                        <span style="color:#080;font-weight:bold">return</span>
+                }
+                msg.When = time.Now()
+                msg.Name = c.userData[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">name</span><span style="color:#710">&quot;</span></span>].(<span style="color:#0a8;font-weight:bold">string</span>)
+
+                <span style="color:#777">// Instead of get directly from client we created a Avatar Interface</span>
+                <span style="color:#777">// if avatarUrl, ok := c.userData[&quot;avatar_url&quot;] ; ok {</span>
+                <span style="color:#777">//        msg.AvatarURL = avatarUrl.(string)</span>
+                <span style="color:#777">// }</span>
+
+                <span style="color:#777">// room have avatar, we passing in nil struct, go allowed to call method from nil object,</span>
+                <span style="color:#777">// then we passing in avatar.GetAvatarURL(c), which is extract avatar url from client.</span>
+                <span style="color:#777">// so it make us easy to make a test case right? isn't it?</span>
+                <span style="color:#777">// cool stuff. also we can have another implementation to get from Gravatar instead of user gmail avatar.</span>
+                <span style="color:#777">// NICE</span>
+                <span style="color:#777">// msg.AvatarURL, _ = c.room.avatar.GetAvatarURL(c)</span>
+                <span style="color:#777">// fmt.Println(&quot;c&quot;, *c)</span>
+
+                <span style="color:#777">// we change again to ChatUser</span>
+                <span style="color:#080;font-weight:bold">if</span> avatarUrl, ok := c.userData[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">avatar_url</span><span style="color:#710">&quot;</span></span>]; ok {
+                        msg.AvatarURL = avatarUrl.(<span style="color:#0a8;font-weight:bold">string</span>)
+                }
+
+                c.room.forward &lt;- msg
+
+                <span style="color:#777">//if _, msg, err := c.socket.ReadMessage(); err == nil {</span>
+                <span style="color:#777">//        c.room.forward &lt;- msg</span>
+                <span style="color:#777">//        fmt.Println(&quot;User type message, c.room.forward &lt;- msg &quot;, string(msg[:]))</span>
+                <span style="color:#777">//}else {</span>
+                <span style="color:#777">//        break</span>
+                <span style="color:#777">//}</span>
+
+        }
+        c.socket.Close()
+}
+
+<span style="color:#777">// the write method continually accepts messages from the send channel writing everything out</span>
+<span style="color:#777">// of the socket via the WriteMessage method. If writing to the socket fails,</span>
+<span style="color:#777">// the for loop is broken and the socket is closed</span>
+<span style="color:#080;font-weight:bold">func</span> (c *client) write() {
+        <span style="color:#080;font-weight:bold">for</span> msg := <span style="color:#080;font-weight:bold">range</span> c.send { <span style="color:#777">// equal to msg byte[] &lt;- ch, waiting for receive</span>
+                err := c.socket.WriteJSON(msg)
+
+                <span style="color:#080;font-weight:bold">if</span> err != <span style="color:#069">nil</span> {
+                        <span style="color:#080;font-weight:bold">break</span>
+                }
+
+                <span style="color:#777">//if err := c.socket.WriteMessage(websocket.TextMessage, msg); err != nil {</span>
+                <span style="color:#777">//        fmt.Println(&quot;write error&quot;, err)</span>
+                <span style="color:#777">//        break;</span>
+                <span style="color:#777">//}</span>
+        }
+        c.socket.Close()
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2 has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/documents/document.adoc-286">
+<h3 id="_main_go_package_main">9.13. main.go (package main)</h3>
+<div class="listingblock has-source-line data-line-/Users/jonny/go/code/src/github.com/jonnyGit81/chat/chatapp/main.go-0">
+<div class="title">main.go (package main)</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="go"><span style="color:#080;font-weight:bold">package</span> main
+
+<span style="color:#080;font-weight:bold">import</span> (
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">flag</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">fmt</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">github.com/stretchr/gomniauth</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">github.com/stretchr/gomniauth/providers/facebook</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">github.com/stretchr/gomniauth/providers/github</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">github.com/stretchr/gomniauth/providers/google</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">github.com/stretchr/objx</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">log</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">net/http</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">path/filepath</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">sync</span><span style="color:#710">&quot;</span></span>
+        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">text/template</span><span style="color:#710">&quot;</span></span>
+)
+
+<span style="color:#777">// set the active Avatar implementation</span>
+<span style="color:#080;font-weight:bold">var</span> avatars Avatar = TryAvatars{
+        UseFileSystemAvatar,
+        UseAuthAvatar,
+        UseGravatar}
+
+<span style="color:#777">//  this struct type that is responsible for loading, compiling, and delivering our template.</span>
+<span style="color:#777">//  compile the template once (using the sync.Once type),</span>
+<span style="color:#777">//  keep the reference to the compiled template, and then respond to HTTP requests.</span>
+<span style="color:#080;font-weight:bold">type</span> templateHandler <span style="color:#080;font-weight:bold">struct</span> {
+        once     sync.Once
+        filename <span style="color:#0a8;font-weight:bold">string</span>
+        templ    *template.Template
+}
+
+<span style="color:#777">// The sync.Once type guarantees that the function we pass as an argument will only be executed once,</span>
+<span style="color:#777">// regardless of how many goroutines are calling ServeHTTP.</span>
+<span style="color:#777">// COMMAND+N implement method Handler</span>
+<span style="color:#777">// ServeHTTP handles the HTTP request.</span>
+<span style="color:#080;font-weight:bold">func</span> (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+        t.once.Do(<span style="color:#080;font-weight:bold">func</span>() {
+                t.templ = template.Must(template.ParseFiles(filepath.Join(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">templates</span><span style="color:#710">&quot;</span></span>, t.filename)))
+        })
+
+        <span style="color:#777">// pass the request r as the data argument to the Execute method:</span>
+        <span style="color:#777">// This tells the template to render itself using data that can be extracted from http.Request,</span>
+        <span style="color:#777">// which happens to include the host address that we need from the flag</span>
+        <span style="color:#777">// so we can access r.Host from Html</span>
+        <span style="color:#777">// To use the Host value of http.Request,</span>
+        <span style="color:#777">// we can then make use of the special template syntax that allows us to inject data.</span>
+        <span style="color:#777">// Update the line where we create our socket in the chat.html file:</span>
+        <span style="color:#777">//t.templ.Execute(w, r)</span>
+
+        <span style="color:#777">// instead directly passing request we change to this</span>
+        <span style="color:#777">// so we can display user</span>
+        data := <span style="color:#080;font-weight:bold">map</span>[<span style="color:#0a8;font-weight:bold">string</span>]<span style="color:#080;font-weight:bold">interface</span>{}{
+                <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Host</span><span style="color:#710">&quot;</span></span>: r.Host,
+        }
+        <span style="color:#080;font-weight:bold">if</span> authCookie, err := r.Cookie(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">auth</span><span style="color:#710">&quot;</span></span>); err == <span style="color:#069">nil</span> {
+                data[<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">UserData</span><span style="color:#710">&quot;</span></span>] = objx.MustFromBase64(authCookie.Value)
+        }
+        t.templ.Execute(w, data)
+}
+
+<span style="color:#080;font-weight:bold">func</span> main() {
+
+        <span style="color:#777">// by using this flag we can run at any port we want</span>
+        <span style="color:#777">// go build -o chat</span>
+        <span style="color:#777">//./chat -addr=&quot;:3000&quot;</span>
+        <span style="color:#777">//Valid hosts aren't just port numbers; you can also specify the IP addresses or</span>
+        <span style="color:#777">// other hostnames provided they are allowed in your environment,</span>
+        <span style="color:#777">// for example, -addr=&quot;192.168.0.1:3000&quot;</span>
+
+        <span style="color:#777">// using injection from build parameters for our Host</span>
+        <span style="color:#777">// The call to flag.String returns a type of *string,</span>
+        <span style="color:#777">// which is to say it returns the address of a string variable where the value of the flag is stored.</span>
+        <span style="color:#777">// To get the value itself (and not the address of the value), we must use the pointer indirection operator, *.</span>
+        <span style="color:#080;font-weight:bold">var</span> addr = flag.String(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">addr</span><span style="color:#710">&quot;</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">:8080</span><span style="color:#710">&quot;</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">The addr host of the application.</span><span style="color:#710">&quot;</span></span>)
+        <span style="color:#777">// We must call flag.Parse() that parses the arguments and extracts the appropriate information.</span>
+        <span style="color:#777">// Then, we can reference the value of the host flag by using *addr</span>
+        flag.Parse()
+
+        <span style="color:#777">// Oauth2</span>
+        <span style="color:#777">//Gomniauth requires the SetSecurityKey call because it sends state data between the client and server along with a signature checksum, which ensures that the state values are not tempered with while being transmitted. The security key is used when creating the hash in a way that it is almost impossible to recreate the same hash without knowing the exact security key. You should replace some long key with a security hash or phrase of your choice.</span>
+        gomniauth.SetSecurityKey(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">8928520ef05111eb9a030242ac130003</span><span style="color:#710">&quot;</span></span>) <span style="color:#777">//uuid</span>
+        gomniauth.WithProviders(
+                facebook.New(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">key</span><span style="color:#710">&quot;</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">secret</span><span style="color:#710">&quot;</span></span>,
+                        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">http://localhost:8080/auth/callback/facebook</span><span style="color:#710">&quot;</span></span>),
+                github.New(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">key</span><span style="color:#710">&quot;</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">secret</span><span style="color:#710">&quot;</span></span>,
+                        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">http://localhost:8080/auth/callback/github</span><span style="color:#710">&quot;</span></span>),
+                google.New(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">14378472304-oaeg1d6hs32nsk6h1av23mb9hopgsldj.apps.googleusercontent.com</span><span style="color:#710">&quot;</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">MucNovJBH6e5sdMfBC9myteU</span><span style="color:#710">&quot;</span></span>,
+                        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">http://localhost:8080/auth/callback/google</span><span style="color:#710">&quot;</span></span>),
+        )
+
+        <span style="color:#777">// controller</span>
+        chatHtmlTemplate := templateHandler{filename: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">chat.html</span><span style="color:#710">&quot;</span></span>}
+
+        <span style="color:#777">// We use decorator pattern to wrap this chatHtmlTemplate Handler to authHandle.</span>
+        <span style="color:#777">// the ServeHTTP on authHandle will get executed first</span>
+        http.Handle(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/chat</span><span style="color:#710">&quot;</span></span>, MustAuth(&amp;chatHtmlTemplate))
+
+        <span style="color:#777">// login controller</span>
+        http.Handle(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/login</span><span style="color:#710">&quot;</span></span>, &amp;templateHandler{filename: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">login.html</span><span style="color:#710">&quot;</span></span>})
+
+        <span style="color:#777">// in go if you end with / it become a prefix to accept, example</span>
+        <span style="color:#777">// --&gt; /auth/login/google</span>
+        <span style="color:#777">// --&gt; /auth/login/facebook</span>
+        <span style="color:#777">// --&gt; /auth/callback/google</span>
+        <span style="color:#777">// --&gt; /auth/callback/facebook</span>
+        <span style="color:#777">// our loginHandler is not and object, it is a function but it statisfied with the handler ServeHTTP method.</span>
+        <span style="color:#777">// go allowed this. why we do this because we don't need it to store any state.</span>
+        http.HandleFunc(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/auth/</span><span style="color:#710">&quot;</span></span>, loginHandler)
+
+        <span style="color:#777">// The preceding handler function uses http.SetCookie to update the cookie setting MaxAge to -1,</span>
+        <span style="color:#777">// which indicates that it should be deleted immediately by the browser.</span>
+        <span style="color:#777">// Not all browsers are forced to delete the cookie,</span>
+        <span style="color:#777">// which is why we also provide a new Value setting of an empty string,</span>
+        <span style="color:#777">// thus removing the user data that would previously have been stored.</span>
+        http.HandleFunc(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/logout</span><span style="color:#710">&quot;</span></span>, <span style="color:#080;font-weight:bold">func</span>(w http.ResponseWriter, r *http.Request) {
+                http.SetCookie(w, &amp;http.Cookie{
+                        Name:   <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">auth</span><span style="color:#710">&quot;</span></span>,
+                        Value:  <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>,
+                        Path:   <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/</span><span style="color:#710">&quot;</span></span>,
+                        MaxAge: <span style="color:#00D">-1</span>,
+                })
+                w.Header().Set(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Location</span><span style="color:#710">&quot;</span></span>, <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/chat</span><span style="color:#710">&quot;</span></span>)
+                w.WriteHeader(http.StatusTemporaryRedirect)
+        })
+
+
+        <span style="color:#777">// upload avatar html template</span>
+        http.Handle(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/upload</span><span style="color:#710">&quot;</span></span>, &amp;templateHandler{filename: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">upload.html</span><span style="color:#710">&quot;</span></span>})
+
+        <span style="color:#777">// upload</span>
+        http.HandleFunc(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/uploader</span><span style="color:#710">&quot;</span></span>, uploaderHandler)
+
+
+        <span style="color:#777">// Serve image file</span>
+        <span style="color:#777">// . Both http.StripPrefix and http.FileServer return http.Handler,</span>
+        <span style="color:#777">// and they make use of the wrapping pattern we learned about in the previous chapter.</span>
+        <span style="color:#777">// The StripPrefix function takes http.Handler in,</span>
+        <span style="color:#777">// modifies the path by removing the specified prefix,</span>
+        <span style="color:#777">// and passes the functionality onto an inner handler.</span>
+        <span style="color:#777">// In our case, the inner handler is an http.FileServer handler that will simply serve static files,</span>
+        <span style="color:#777">// provide index listings, and generate the 404 Not Found error if it cannot find the file.</span>
+        <span style="color:#777">// The http.Dir function allows us to specify which folder we want to expose publicly.</span>
+        <span style="color:#777">// If we didn't strip the /avatars/ prefix from the requests with http.StripPrefix,</span>
+        <span style="color:#777">// the file server would look for another folder called avatars inside the actual avatars folder,</span>
+        <span style="color:#777">// that is, /avatars/avatars/filename instead of /avatars/filename.</span>
+        http.Handle(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/avatars/</span><span style="color:#710">&quot;</span></span>,
+                http.StripPrefix(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/avatars/</span><span style="color:#710">&quot;</span></span>, http.FileServer(http.Dir(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">./avatars</span><span style="color:#710">&quot;</span></span>))))
+
+
+
+
+        <span style="color:#777">// room controller</span>
+        <span style="color:#777">// We didn't have to create an instance of AuthAvatar, so no memory was allocated. In our case,</span>
+        <span style="color:#777">// this doesn't result in great saving (since we only have one room for our entire application),</span>
+        <span style="color:#777">// but imagine the size of the potential savings if our application has thousands of rooms.</span>
+        <span style="color:#777">// The way we named the UseAuthAvatar variable means that the preceding code is very easy</span>
+        <span style="color:#777">// to read and it also makes our intention obvious.</span>
+
+        <span style="color:#777">//r := newRoom(UseAuthAvatar)</span>
+
+        <span style="color:#777">// Or we want to use Gravatar instead</span>
+        <span style="color:#777">// r := newRoom(UseGravatar)</span>
+
+        <span style="color:#777">// Or we use system file avatar</span>
+        <span style="color:#777">//r := newRoom(UseFileSystemAvatar)</span>
+
+
+        <span style="color:#777">//now we use global variable  var avatars Avatar = UseFileSystemAvatar</span>
+        r := newRoom()
+
+
+
+        <span style="color:#777">// if user dont want to use any tracer</span>
+        <span style="color:#777">//r.trace = trace.New(os.Stdout)</span>
+
+        http.Handle(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/room</span><span style="color:#710">&quot;</span></span>, r)
+
+        <span style="color:#777">// get the room going</span>
+        <span style="color:#777">// room in a separate Go routine (notice the go keyword again)</span>
+        <span style="color:#777">// so that the chatting operations occur in the background, allowing our main thread to run the web server</span>
+        <span style="color:#080;font-weight:bold">go</span> r.run()
+
+        <span style="color:#777">// start the web server</span>
+        log.Println(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Starting web server on</span><span style="color:#710">&quot;</span></span>, *addr)
+
+        <span style="color:#777">// bootstrap function</span>
+        <span style="color:#777">// start the web server</span>
+        <span style="color:#777">//if err := http.ListenAndServe(&quot;:8080&quot;, nil); err != nil {</span>
+        <span style="color:#080;font-weight:bold">if</span> err := http.ListenAndServe(*addr, <span style="color:#069">nil</span>); err != <span style="color:#069">nil</span> {
+                log.Fatal(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">ListenAndServe</span><span style="color:#710">&quot;</span></span>, err)
+        }
+
+        fmt.Println(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Server started...</span><span style="color:#710">&quot;</span></span>)
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+ 2021-07-31 15:16:48 +0700
+</div>
+</div>
+</body>
+</html>

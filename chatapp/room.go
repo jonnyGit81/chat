@@ -97,6 +97,8 @@ func (r *room) run() {
 // Update the newRoom function so that we can pass in an Avatar implementation for use;
 // we will just assign this implementation to the new field when we create our room instance:
 //func newRoom() *room {
+/* since every message we need to get avatar is expensive,
+ so we change the avatar to get only at login time and cache it into cookie.
 func newRoom(avatar Avatar) *room {
 	r := room{
 		//we change to message struct
@@ -107,6 +109,18 @@ func newRoom(avatar Avatar) *room {
 		clients: make(map[*client]bool),
 		tracer:  trace.Off(),
 		avatar:  avatar,
+	}
+	return &r
+}
+*/
+
+func newRoom() *room {
+	r := room{
+		forward: make(chan *message),
+		join:    make(chan *client),
+		leave:   make(chan *client),
+		clients: make(map[*client]bool),
+		tracer:  trace.Off(),
 	}
 	return &r
 }
