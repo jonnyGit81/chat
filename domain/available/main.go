@@ -12,6 +12,7 @@ import (
 
 func exists(domain string) (bool, error) {
 	const whoisServer string = "com.whois-servers.net"
+
 	conn, err := net.Dial("tcp", whoisServer+":43")
 	if err != nil {
 		return false, err
@@ -19,13 +20,13 @@ func exists(domain string) (bool, error) {
 	defer conn.Close()
 	conn.Write([]byte(domain + "rn"))
 	scanner := bufio.NewScanner(conn)
-	//fmt.Println("conn", conn)
+
 	for scanner.Scan() {
-		//fmt.Println("scanner.Text()",scanner.Text())
 		if strings.Contains(strings.ToLower(scanner.Text()), "no match") {
 			return false, nil
 		}
 	}
+
 	return true, nil
 }
 

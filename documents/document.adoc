@@ -395,3 +395,6 @@ see the code consume json on bighuge.go
 
 
 then type chat
+
+The preceding script simply builds all our subprograms (including domainfinder, which we are yet to write),
+telling go build to place them in our lib folder. Be sure to give execution rights to the new script by doing *chmod +x build.sh* or something similar. Run this script from a terminal and look inside the lib folder to ensure that it has indeed placed the binaries for our subprograms.
