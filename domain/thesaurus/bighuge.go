@@ -3,7 +3,6 @@ package thesaurus
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net/http"
 )
 
@@ -24,8 +23,6 @@ func (b *BigHuge) Synonyms(term string) ([]string, error) {
 	var syns []string
 
 	reqStr := "https://words.bighugelabs.com/api/2/" + b.APIKey + "/" + term + "/json"
-
-	fmt.Println("reqStr", reqStr)
 
 	response, err := http.Get(reqStr)
 

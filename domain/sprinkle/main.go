@@ -23,7 +23,6 @@ var transforms = []string{
 }
 
 func main() {
-	fmt.Println(transforms)
 
 	rand.Seed(time.Now().UTC().UnixNano())
 	s := bufio.NewScanner(os.Stdin)

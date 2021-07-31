@@ -391,4 +391,7 @@ see the code consume json on bighuge.go
 
     ./domain/synonyms/synonyms | ./domain/sprinkle/sprinkle | ./domain/coolify/coolify |  ./domain/domainify/domainify
 
+    ./domain/synonyms/synonyms | ./domain/sprinkle/sprinkle | ./domain/coolify/coolify |  ./domain/domainify/domainify | ./domain/available/available
+
+
 then type chat
