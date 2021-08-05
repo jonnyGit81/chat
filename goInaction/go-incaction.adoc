@@ -1,0 +1,221 @@
+:internal:
+= Go In Action
+:toc: left
+:author: Jonny
+:revnumber!: 1.0.0
+:revdate: Sunday, 01 August, 2021
+:doctype:   article
+:encoding:  utf-8
+:lang:      en
+:toc:       left
+:toclevels: 20
+:toc-title: Table of Content
+:sectnums:
+:last-update-label:
+:nofooter!:
+:media: print
+:icons: font
+:pagenums:
+:imagesdir: images/
+:numbered:
+:toc: left
+:xrefstyle: full
+
+== Chapter 2
+
+image:1.jpeg[]
+
+image:2.jpeg[]
+
+
+== Note
+
+- Slice
+
+1. Be aware of Slice
+
+   Slice is 3 word, pointer, len , cap and pointing to backing array
+
+When passing slice between method
+
+====
+  type Feed struct {
+	Name string `json:"site"`
+	URI  string `json:"link"`
+	Type string `json:"type"`
+  }
+
+  // Slice is reference type, if you append and not enough capacity you get a new backing array
+  // of the slice pointing to, and caller and receiver function will have different
+  func RetrieveFeeds(feeds []*Feed) ([]*Feed, error) {
+
+  }
+
+  // We passing address of the slice.
+  // append on this function will affected the caller slice
+  // never do this, unless is decode and marshal / unmarshal.
+  // caller =>
+  func RetrieveFeeds(feeds *[]Feed) (*[]Feed, error) {
+
+  }
+====
+
+- Method
+
+1. value receiver can be called using pointer or value the compiler will reference or dereference the value if necessary to support the call.
+
+====
+type defaultMatcher struct{
+    name string
+}
+
+    func (m defaultMatcher) search() string {
+        return fmt.Sprintf("Executed defaultMatcher %s", m)
+    }
+
+    func main() {
+        m1 := defaultMatcher{"value"}
+
+	    fmt.Println(m1.search())
+
+	    m2 := new(defaultMatcher)
+	    m2.name = "pointer"
+
+	    fmt.Println(m2.search())
+    }
+
+    Executed defaultMatcher {value}
+    Executed defaultMatcher {pointer}
+====
+
+
+====
+
+    type defaultMatcher struct{name string}
+
+    func (m *defaultMatcher) search() string {
+        return fmt.Sprintf("Executed defaultMatcher %s", m)
+    }
+
+    func main() {
+    m1 := defaultMatcher{"value"}
+
+        fmt.Println(m1.search())
+
+        m2 := new(defaultMatcher)
+        m2.name = "pointer"
+        fmt.Println(m2.search())
+
+    }
+
+    Executed defaultMatcher &{value}
+    Executed defaultMatcher &{pointer}
+====
+
+Unlike when you call methods directly from values and pointers, when you call a method via an interface type value, the rules are different. Methods declared with pointer receivers can only be called by interface type values that contain pointers. Methods declared with value receivers can be called by interface type values that contain both values and pointers.
+
+====
+1.
+
+    // Method declared with a pointer receiver of type defaultMatcher
+    func (m *defaultMatcher) Search(feed *Feed, searchTerm string)
+
+    // Call the method via an interface type value
+    var dm defaultMatcher
+    var matcher Matcher = dm     // Assign value to interface type
+    matcher.Search(feed, "test") // Call interface method with value
+
+    > go build
+    cannot use dm (type defaultMatcher) as type Matcher in assignment
+
+
+2.
+
+    // Method declared with a value receiver of type defaultMatcher
+    func (m defaultMatcher) Search(feed *Feed, searchTerm string)
+
+    // Call the method via an interface type value
+    var dm defaultMatcher
+    var matcher Matcher = &dm    // Assign pointer to interface type
+    matcher.Search(feed, "test") // Call interface method with pointer
+
+    > go build
+    Build Successful
+
+====
+
+*Example Pointer Receiver only can call using interface value type pointer*
+====
+
+    type matcher interface {
+        search() string
+    }
+
+    type defaultMatcher struct {
+        name string
+    }
+
+    func (m *defaultMatcher) search() string {
+        return fmt.Sprintf("Executed defaultMatcher %s", m)
+    }
+
+    func main() {
+	    var m matcher = &defaultMatcher{"value"}
+	    fmt.Println(m.search())
+    }
+
+    Executed defaultMatcher &{value}
+====
+
+*Example Value Receiver allowed both call using interface value type pointer or interface value type value*
+
+====
+
+1. call using interface value type pointer
+
+    type matcher interface {
+        search() string
+    }
+
+    type defaultMatcher struct {
+        name string
+    }
+
+    func (m *defaultMatcher) search() string {
+        return fmt.Sprintf("Executed defaultMatcher %s", m)
+    }
+
+    func main() {
+	    var m matcher = &defaultMatcher{"value"}
+	    fmt.Println(m.search())
+    }
+
+    Executed defaultMatcher &{value}
+
+====
+
+2. call using interface value type value
+
+
+*Example Pointer Receiver only can call using interface value type pointer*
+====
+
+   type matcher interface {
+	search() string
+    }
+
+    type defaultMatcher struct {
+        name string
+    }
+
+    func (m defaultMatcher) search() string {
+        return fmt.Sprintf("Executed defaultMatcher %s", m)
+    }
+
+    func main() {
+        var m matcher = defaultMatcher{"value"}
+        fmt.Println(m.search())
+    }
+
+    Executed defaultMatcher {value}
+====

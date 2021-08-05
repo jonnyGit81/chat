@@ -1,0 +1,164 @@
+Go has its own elegance and programming idioms that make the language productive and fun to code in. The language designers set out to create a language that would let them be productive without losing access to the lower-level programming constructs they needed. This balance is achieved through a minimized set of keywords, built-in functions, and syntax. Go also provides a comprehensive standard library. The standard library provides all the core packages programmers need to build real-world web- and network-based programs.
+
+To see this in action, we’ll review a complete Go program that implements functionality that can be found in many Go programs being developed today. The program pulls different data feeds from the web and compares the content against a search term. The content that matches is then displayed in the terminal window. The program reads text files, makes web calls, and decodes both XML and JSON into struct type values, and it does all of this using Go concurrency to make things fast.
+
+Don’t feel that you need to understand everything you read and review in this chapter the first, second, or even the third time. Though many of the programming concepts you know today can be applied when learning Go, Go also has its unique idioms and style. If you can liberate yourself from your current programming language and look at Go with a fresh set of eyes and a clear mind, you’ll find it easier to understand and appreciate, and you’ll see Go’s elegance.
+
+
+- Example XML
+
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:media="http://search.yahoo.com/mrss/" xmlns:npr="https://www.npr.org/rss/" xmlns:nprml="https://api.npr.org/nprml" version="2.0">
+   <channel>
+      <title>News : NPR</title>
+      <link>https://www.npr.org/templates/story/story.php?storyId=1001</link>
+      <description>NPR news, audio, and podcasts. Coverage of breaking stories, national and world news, politics, business, science, technology, and extended coverage of major national and world events.</description>
+      <language>en</language>
+      <copyright>Copyright 2021 NPR - For Personal Use Only</copyright>
+      <generator>NPR API RSS Generator 0.94</generator>
+      <lastBuildDate>Sun, 01 Aug 2021 07:31:53 -0400</lastBuildDate>
+      <image>
+         <url>https://media.npr.org/images/podcasts/primary/npr_generic_image_300.jpg?s=200</url>
+         <title>News</title>
+         <link>https://www.npr.org/templates/story/story.php?storyId=1001</link>
+      </image>
+      <item>
+         <title>Sunisa Lee Takes Bronze In The Olympic Uneven Bars Final</title>
+         <description>Lee flipped and twisted from bar to bar in a sparkly blue leotard. She smiled and looked confident as she walked off the mat, and seemed a little surprised at her score.</description>
+         <pubDate>Sun, 01 Aug 2021 07:31:53 -0400</pubDate>
+         <link>https://www.npr.org/sections/tokyo-olympics-live-updates/2021/08/01/1023394540/sunisa-lee-bronze-olympic-uneven-bars-final-gymnastics</link>
+         <guid>https://www.npr.org/sections/tokyo-olympics-live-updates/2021/08/01/1023394540/sunisa-lee-bronze-olympic-uneven-bars-final-gymnastics</guid>
+         <content:encoded><![CDATA[<img src='https://media.npr.org/assets/img/2021/08/01/gettyimages-1331764027_wide-6873d52ec1d4aef5ce7a89344086b6329cc9b217.jpg?s=600' alt='U.S. gymnast Sunisa Lee competes in the women's uneven bars final on Sunday at the Olympic Games in Tokyo.'/><p>Lee flipped and twisted from bar to bar in a sparkly blue leotard. She smiled and looked confident as she walked off the mat, and seemed a little surprised at her score.</p><p>(Image credit: Maja Hitij/Getty Images)</p><img src='https://media.npr.org/include/images/tracking/npr-rss-pixel.png?story=1023394540' />]]></content:encoded>
+         <dc:creator>Merrit Kennedy</dc:creator>
+      </item>
+      <item>
+         <title>U.S. Gymnast MyKayla Skinner Medals In An Event She Didn't Expect To Compete In</title>
+         <description>Skinner was tapped to compete in the vault individual final after Simone Biles, the greatest gymnast in the world, withdrew from the competition to focus on her mental health.</description>
+         <pubDate>Sun, 01 Aug 2021 05:46:44 -0400</pubDate>
+         <link>https://www.npr.org/sections/tokyo-olympics-live-updates/2021/08/01/1023367071/gymnastics-mykayla-skinner-vault-sunisa-lee-simone-biles</link>
+         <guid>https://www.npr.org/sections/tokyo-olympics-live-updates/2021/08/01/1023367071/gymnastics-mykayla-skinner-vault-sunisa-lee-simone-biles</guid>
+         <content:encoded><![CDATA[<img src='https://media.npr.org/assets/img/2021/08/01/ap21213334811773_wide-fcd6213d7cc2b09166a5ee4b745fe1b6e7ed54b9.jpg?s=600' alt='U.S. gymnast MyKayla Skinner performs on the vault during the gymnastics women's apparatus final at the Summer Olympics in Tokyo.'/><p>Skinner was tapped to compete in the vault individual final after Simone Biles, the greatest gymnast in the world, withdrew from the competition to focus on her mental health.</p><p>(Image credit: Natacha Pisarenko/AP)</p><img src='https://media.npr.org/include/images/tracking/npr-rss-pixel.png?story=1023367071' />]]></content:encoded>
+         <dc:creator>Merrit Kennedy</dc:creator>
+      </item>
+      <item>
+         <title>Out-And-Proud Raven 'Hulk' Saunders Takes Silver In Women's Shot Put</title>
+         <description>Saunders said she's been open about her mental health struggles so others don't feel alone. It's also why she wears her identities so proudly as a gay Black woman.</description>
+         <pubDate>Sun, 01 Aug 2021 00:55:44 -0400</pubDate>
+         <link>https://www.npr.org/sections/tokyo-olympics-live-updates/2021/08/01/1023311314/out-and-proud-raven-hulk-saunders-takes-silver-in-womens-shotput</link>
+         <guid>https://www.npr.org/sections/tokyo-olympics-live-updates/2021/08/01/1023311314/out-and-proud-raven-hulk-saunders-takes-silver-in-womens-shotput</guid>
+         <content:encoded><![CDATA[<img src='https://media.npr.org/assets/img/2021/08/01/ap21213077006309_wide-ec0ced2c45cec64356cac3ff36c1698283faeafb.jpg?s=600' alt='U.S. shot putter Raven Saunders competes in the final at the Summer Olympics on Sunday in Tokyo.'/><p>Saunders said she's been open about her mental health struggles so others don't feel alone. It's also why she wears her identities so proudly as a gay Black woman.</p><p>(Image credit: Matthias Schrader/AP)</p><img src='https://media.npr.org/include/images/tracking/npr-rss-pixel.png?story=1023311314' />]]></content:encoded>
+         <dc:creator>Leila Fadel</dc:creator>
+      </item>
+      <item>
+         <title>Western Wildfires May Take Weeks To Months To Contain</title>
+         <description>The Bootleg Fire in southern Oregon, the country's largest active blaze, could reach full containment in October. Until then, officials say, wildfire conditions will only continue to intensify.</description>
+         <pubDate>Sun, 01 Aug 2021 00:13:44 -0400</pubDate>
+         <link>https://www.npr.org/2021/08/01/1023274008/western-wildfires-oregon-california-drought</link>
+         <guid>https://www.npr.org/2021/08/01/1023274008/western-wildfires-oregon-california-drought</guid>
+         <content:encoded><![CDATA[<img src='https://media.npr.org/assets/img/2021/07/31/usfs-phto_wide-940dbe3f18f60024edbcae8bc2024d49b2effe7f.jpeg?s=600' alt='The Dixie Fire in Northern California is about the size of San Diego and has more than 5,800 workers on scene. It's the second-largest active fire in the country as of Saturday.'/><p>The Bootleg Fire in southern Oregon, the country's largest active blaze, could reach full containment in October. Until then, officials say, wildfire conditions will only continue to intensify.</p><p>(Image credit: U.S. Forest Service)</p><img src='https://media.npr.org/include/images/tracking/npr-rss-pixel.png?story=1023274008' />]]></content:encoded>
+         <dc:creator>Dustin Jones</dc:creator>
+      </item>
+      <item>
+         <title>Simone Biles Withdraws From Floor, Still Might Compete In Balance Beam</title>
+         <description>"Simone has withdrawn from the event final for floor and will make a decision on beam later this week," USA Gymnastics said. "Either way, we're all behind you, Simone."</description>
+         <pubDate>Sat, 31 Jul 2021 23:42:22 -0400</pubDate>
+         <link>https://www.npr.org/sections/tokyo-olympics-live-updates/2021/07/31/1023311986/simone-biles-withdraws-from-floor-gymnastics-tokyo-olympics-balance-beam</link>
+         <guid>https://www.npr.org/sections/tokyo-olympics-live-updates/2021/07/31/1023311986/simone-biles-withdraws-from-floor-gymnastics-tokyo-olympics-balance-beam</guid>
+         <content:encoded><![CDATA[<img src='https://media.npr.org/assets/img/2021/07/31/ap21208429507756_wide-45f070879429c9d541ef51169a79c6bf8d609e6c.jpg?s=600' alt='Simone Biles embraces teammate Jordan Chiles after she exited the team final at the Summer Olympics in Tokyo.'/><p>"Simone has withdrawn from the event final for floor and will make a decision on beam later this week," USA Gymnastics said. "Either way, we're all behind you, Simone."</p><p>(Image credit: Gregory Bull/AP)</p><img src='https://media.npr.org/include/images/tracking/npr-rss-pixel.png?story=1023311986' />]]></content:encoded>
+         <dc:creator>Merrit Kennedy</dc:creator>
+      </item>
+      <item>
+         <title>Caeleb Dressel Is Leaving Tokyo With Five Olympic Gold Medals</title>
+         <description>It's been an astonishingly successful Games for the 24-year-old from Florida. He added two gold medals to his haul from the Tokyo Olympics, departing the Games with five golds.</description>
+         <pubDate>Sat, 31 Jul 2021 23:07:23 -0400</pubDate>
+         <link>https://www.npr.org/sections/tokyo-olympics-live-updates/2021/07/31/1023305493/caeleb-dressel-swimming-50-meter-relay-olympic-gold-medals</link>
+         <guid>https://www.npr.org/sections/tokyo-olympics-live-updates/2021/07/31/1023305493/caeleb-dressel-swimming-50-meter-relay-olympic-gold-medals</guid>
+         <content:encoded><![CDATA[<img src='https://media.npr.org/assets/img/2021/07/31/gettyimages-1331702817_wide-39401f9f31c7f644616c6092c408ea9b5487ecf9.jpg?s=600' alt='U.S. star Caeleb Dressel reacts after winning the gold medal and breaking the Olympic record in the men's 50 meter freestyle final at the Tokyo Olympics.'/><p>It's been an astonishingly successful Games for the 24-year-old from Florida. He added two gold medals to his haul from the Tokyo Olympics, departing the Games with five golds.</p><p>(Image credit: Al Bello/Getty Images)</p><img src='https://media.npr.org/include/images/tracking/npr-rss-pixel.png?story=1023305493' />]]></content:encoded>
+         <dc:creator>Merrit Kennedy</dc:creator>
+      </item>
+      <item>
+         <title>Why DoorDash Drivers Are On Strike</title>
+         <description>Having organized on TikTok, Reddit and Facebook, many DoorDash drivers around the country logged off the app on Saturday. Drivers are demanding tip transparency and higher pay.</description>
+         <pubDate>Sat, 31 Jul 2021 20:03:03 -0400</pubDate>
+         <link>https://www.npr.org/2021/07/31/1023265561/why-doordash-drivers-are-on-strike</link>
+         <guid>https://www.npr.org/2021/07/31/1023265561/why-doordash-drivers-are-on-strike</guid>
+         <content:encoded><![CDATA[<img src='https://media.npr.org/assets/img/2021/07/31/gettyimages-1289399743_wide-7d11a2db2f7de2e831647d0d4c488fc5efc4a98a.jpg?s=600' alt='A DoorDash delivery person rides their bike in New York City. Workers across the country went on strike on July 31 to demand higher pay and tip transparency.'/><p>Having organized on TikTok, Reddit and Facebook, many DoorDash drivers around the country logged off the app on Saturday. Drivers are demanding tip transparency and higher pay.</p><p>(Image credit: Michael M. Santiago/Getty Images)</p><img src='https://media.npr.org/include/images/tracking/npr-rss-pixel.png?story=1023265561' />]]></content:encoded>
+         <dc:creator>Josie Fischels</dc:creator>
+      </item>
+      <item>
+         <title>Disqualified Nigerian Athletes Protest At Olympic Village</title>
+         <description>Ten of Nigeria's 23 Olympic athletes were ruled ineligible after officials determined they had not received the required number of drug tests in the months leading up to the Tokyo Games.</description>
+         <pubDate>Sat, 31 Jul 2021 18:54:42 -0400</pubDate>
+         <link>https://www.npr.org/sections/tokyo-olympics-live-updates/2021/07/31/1023239557/disqualified-nigerian-athletes-protest-at-olympic-village</link>
+         <guid>https://www.npr.org/sections/tokyo-olympics-live-updates/2021/07/31/1023239557/disqualified-nigerian-athletes-protest-at-olympic-village</guid>
+         <content:encoded><![CDATA[<img src='https://media.npr.org/assets/img/2021/07/31/gettyimages-1178594256_wide-3ea06f0a7ded959ee0a04a26d5814df778d95f5b.jpg?s=600' alt='Chioma Onyekwere of Nigeria, shown competing in the Women's Discus qualification of the World Athletics Championships Doha 2019 in Qatar, was one of 10 Nigerians disqualified from the Tokyo Games.'/><p>Ten of Nigeria's 23 Olympic athletes were ruled ineligible after officials determined they had not received the required number of drug tests in the months leading up to the Tokyo Games.</p><p>(Image credit: Alexander Hassenstein/Getty Images for IAAF)</p><img src='https://media.npr.org/include/images/tracking/npr-rss-pixel.png?story=1023239557' />]]></content:encoded>
+         <dc:creator>Matthew S. Schwartz</dc:creator>
+      </item>
+      <item>
+         <title>MyKayla Skinner Will Compete For Simone Biles In Women's Vault Finals</title>
+         <description>The 24-year-old was an alternate for the women's team at the 2016 Olympic Games in Rio. Sunday will be her last chance to compete at the Olympic level before retiring from gymnastics.</description>
+         <pubDate>Sat, 31 Jul 2021 17:57:42 -0400</pubDate>
+         <link>https://www.npr.org/sections/tokyo-olympics-live-updates/2021/07/31/1023234130/mykayla-skinner-will-compete-for-simone-biles-in-womens-vault-finals</link>
+         <guid>https://www.npr.org/sections/tokyo-olympics-live-updates/2021/07/31/1023234130/mykayla-skinner-will-compete-for-simone-biles-in-womens-vault-finals</guid>
+         <content:encoded><![CDATA[<img src='https://media.npr.org/assets/img/2021/07/31/ap21177097138767_wide-b08364cbda5dba44ac7ae366274204c0cde10d7b.jpg?s=600' alt='MyKayla Skinner, 24, will compete in place of Simone Biles, who elected not to compete in the vault and uneven bars finals this Sunday.'/><p>The 24-year-old was an alternate for the women's team at the 2016 Olympic Games in Rio. Sunday will be her last chance to compete at the Olympic level before retiring from gymnastics.</p><p>(Image credit: Jeff Roberson/AP)</p><img src='https://media.npr.org/include/images/tracking/npr-rss-pixel.png?story=1023234130' />]]></content:encoded>
+         <dc:creator>Dustin Jones</dc:creator>
+      </item>
+      <item>
+         <title>An Australian Gold Medalist Invited Her Bronze-Winning Teammate To Share The Podium</title>
+         <description>After winning her second gold medal, swimmer Kaylee McKeown invited Emily Seebohm to share the top step of the podium. "It was quite emotional. She had some tears in her eyes, so did I," McKeown says.</description>
+         <pubDate>Sat, 31 Jul 2021 14:31:49 -0400</pubDate>
+         <link>https://www.npr.org/sections/tokyo-olympics-live-updates/2021/07/31/1023208231/tokyo-olympics-australia-gold-medal-bronze-podium-share</link>
+         <guid>https://www.npr.org/sections/tokyo-olympics-live-updates/2021/07/31/1023208231/tokyo-olympics-australia-gold-medal-bronze-podium-share</guid>
+         <content:encoded><![CDATA[<img src='https://media.npr.org/assets/img/2021/07/31/gettyimages-1234332595_wide-4eef5da30acdadcfd358ec0248710376e8c01a05.jpg?s=600' alt='Australian gold medalist Kaylee McKeown (left) poses with bronze medalist and teammate Emily Seebohm, who she invited to the top podium after the women's 200-meter backstroke swimming final at the Tokyo Olympics on Saturday.'/><p>After winning her second gold medal, swimmer Kaylee McKeown invited Emily Seebohm to share the top step of the podium. "It was quite emotional. She had some tears in her eyes, so did I," McKeown says.</p><p>(Image credit: Oli Scarff /AFP via Getty Images)</p><img src='https://media.npr.org/include/images/tracking/npr-rss-pixel.png?story=1023208231' />]]></content:encoded>
+         <dc:creator>Josie Fischels</dc:creator>
+      </item>
+      <item>
+         <title>Tokyo's New COVID-19 Infections Hit A Record Again, Topping 4,000 For The First Time</title>
+         <description>Daily infections are nearly quadruple the numbers reported just a week ago. Japan's prime minister, who has denied the Olympics are to blame, has extended a state of emergency to the end of August.</description>
+         <pubDate>Sat, 31 Jul 2021 13:06:20 -0400</pubDate>
+         <link>https://www.npr.org/sections/coronavirus-live-updates/2021/07/31/1023183575/tokyo-covid-coronavirus-cases-4000-japan</link>
+         <guid>https://www.npr.org/sections/coronavirus-live-updates/2021/07/31/1023183575/tokyo-covid-coronavirus-cases-4000-japan</guid>
+         <content:encoded><![CDATA[<img src='https://media.npr.org/assets/img/2021/07/31/gettyimages-1316762597_wide-d2d0e3de3532b07f9522d5b7c87f3a62ce0d599e.jpg?s=600' alt='People in Tokyo wear masks on May 7. Daily coronavirus infections in Japan's capital have topped 4,000 — nearly four times as many as a week ago.'/><p>Daily infections are nearly quadruple the numbers reported just a week ago. Japan's prime minister, who has denied the Olympics are to blame, has extended a state of emergency to the end of August.</p><p>(Image credit: Yuichi Yamazaki/Getty Images)</p><img src='https://media.npr.org/include/images/tracking/npr-rss-pixel.png?story=1023183575' />]]></content:encoded>
+         <dc:creator>Josie Fischels</dc:creator>
+      </item>
+      <item>
+         <title>Novak Djokovic, The World's No. 1 Tennis Player, Fails To Medal At The Olympics</title>
+         <description>Serbia's Djokovic loses to Spain's Pablo Carreño Busta, ending his chances of winning a bronze in Tokyo. "I gave it all, whatever I had left in the tank, which was not so much," Djokovic says.</description>
+         <pubDate>Sat, 31 Jul 2021 12:11:17 -0400</pubDate>
+         <link>https://www.npr.org/sections/tokyo-olympics-live-updates/2021/07/31/1023184024/tokyo-olympics-novak-djokovic-loses-bronze-tennis</link>
+         <guid>https://www.npr.org/sections/tokyo-olympics-live-updates/2021/07/31/1023184024/tokyo-olympics-novak-djokovic-loses-bronze-tennis</guid>
+         <content:encoded><![CDATA[<img src='https://media.npr.org/assets/img/2021/07/31/ap_21212245938869_wide-f691dd9c19c8978a553ed220d397482aff8cf8f7.jpg?s=600' alt='Novak Djokovic of Serbia reacts during the bronze medal match that he lost to Spain's Pablo Carreño Busta at the Tokyo Olympics on Saturday.'/><p>Serbia's Djokovic loses to Spain's Pablo Carreño Busta, ending his chances of winning a bronze in Tokyo. "I gave it all, whatever I had left in the tank, which was not so much," Djokovic says.</p><p>(Image credit: Seth Wenig/AP)</p><img src='https://media.npr.org/include/images/tracking/npr-rss-pixel.png?story=1023184024' />]]></content:encoded>
+         <dc:creator>Matthew S. Schwartz</dc:creator>
+      </item>
+      <item>
+         <title>Russians Tied To The SolarWinds Cyberattack Hacked Federal Prosecutors, DOJ Says</title>
+         <description>Russian hackers broke into email accounts of prominent federal prosecutors' offices last year, the Justice Department says. A former prosecutor says such accounts often transmit sensitive information.</description>
+         <pubDate>Sat, 31 Jul 2021 09:51:23 -0400</pubDate>
+         <link>https://www.npr.org/2021/07/31/1023162095/russians-hacked-federal-prosecutors-doj-solarwinds</link>
+         <guid>https://www.npr.org/2021/07/31/1023162095/russians-hacked-federal-prosecutors-doj-solarwinds</guid>
+         <content:encoded><![CDATA[<img src='https://media.npr.org/assets/img/2021/07/31/ap21212034042837_wide-457ae6b4fca2e4dfa68ee3946b0da7862c12b347.jpg?s=600' alt='The Justice Department said 27 U.S. Attorney offices had at least one employee's email account compromised.'/><p>Russian hackers broke into email accounts of prominent federal prosecutors' offices last year, the Justice Department says. A former prosecutor says such accounts often transmit sensitive information.</p><p>(Image credit: Patrick Semansky/AP)</p><img src='https://media.npr.org/include/images/tracking/npr-rss-pixel.png?story=1023162095' />]]></content:encoded>
+         <dc:creator>The Associated Press</dc:creator>
+      </item>
+      <item>
+         <title>Russia's 'Foreign Agent' Law Targets Journalists, Activists, Even Ordinary Citizens</title>
+         <description>The recently expanded law says that freelance journalists, YouTube bloggers and practically anyone else who receives money from abroad and voices a political opinion can be considered a foreign agent.</description>
+         <pubDate>Sat, 31 Jul 2021 09:34:00 -0400</pubDate>
+         <link>https://www.npr.org/2021/07/31/1021804569/russias-foreign-agent-law-targets-journalists-activists-even-ordinary-citizens</link>
+         <guid>https://www.npr.org/2021/07/31/1021804569/russias-foreign-agent-law-targets-journalists-activists-even-ordinary-citizens</guid>
+         <content:encoded><![CDATA[<img src='https://media.npr.org/assets/img/2021/07/30/img_7059-002-_wide-eac42221eae2e272ef14fadca590270b309dd589.jpg?s=600' alt='A self-portrait of Darya Apakhonchich, with the writing on her face and a figure of a woman saying: "Not only a body but a person, person, person, person, person." She made the photo in support of Russian artist and LGBTQ activist Yulia Tsvetkova, who faces criminal charges for spreading pornography through her art.'/><p>The recently expanded law says that freelance journalists, YouTube bloggers and practically anyone else who receives money from abroad and voices a political opinion can be considered a foreign agent.</p><p>(Image credit: Darya Apakhonchich)</p><img src='https://media.npr.org/include/images/tracking/npr-rss-pixel.png?story=1021804569' />]]></content:encoded>
+         <dc:creator>Lucian Kim</dc:creator>
+      </item>
+      <item>
+         <title>Elaine Thompson-Herah Is Crowned The Fastest Woman In The World At The Tokyo Games</title>
+         <description>Elaine Thompson-Herah of Jamaica has won the fastest women's track race at the Tokyo Games in Olympic record time. She was the defending gold medalist in this event. Jamaica swept the final.</description>
+         <pubDate>Sat, 31 Jul 2021 08:56:48 -0400</pubDate>
+         <link>https://www.npr.org/sections/tokyo-olympics-live-updates/2021/07/31/1023107697/elaine-thompson-herah-is-crowned-the-fastest-woman-in-the-world-at-the-tokyo-gam</link>
+         <guid>https://www.npr.org/sections/tokyo-olympics-live-updates/2021/07/31/1023107697/elaine-thompson-herah-is-crowned-the-fastest-woman-in-the-world-at-the-tokyo-gam</guid>
+         <content:encoded><![CDATA[<img src='https://media.npr.org/assets/img/2021/07/31/gettyimages-1331621847_wide-ccd5506b455253b99ae8320e4cf289b280c50c01.jpg?s=600' alt='Elaine Thompson-Herah of Team Jamaica crosses the finish line to win the gold medal in the women's 100-meter final at the Tokyo Olympic Games on Saturday.'/><p>Elaine Thompson-Herah of Jamaica has won the fastest women's track race at the Tokyo Games in Olympic record time. She was the defending gold medalist in this event. Jamaica swept the final.</p><p>(Image credit: Michael Steele/Getty Images)</p><img src='https://media.npr.org/include/images/tracking/npr-rss-pixel.png?story=1023107697' />]]></content:encoded>
+         <dc:creator>Merrit Kennedy</dc:creator>
+      </item>
+   </channel>
+</rss>
+----

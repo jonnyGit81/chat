@@ -398,3 +398,159 @@ then type chat
 
 The preceding script simply builds all our subprograms (including domainfinder, which we are yet to write),
 telling go build to place them in our lib folder. Be sure to give execution rights to the new script by doing *chmod +x build.sh* or something similar. Run this script from a terminal and look inside the lib folder to ensure that it has indeed placed the binaries for our subprograms.
+
+
+== Chapter 5.  Building Distributed Systems and Working with Flexible Data
+
+In this chapter, we will explore transferrable skills that allow us to use schemaless data and distributed technologies to solve big data problems. The system we will build in this chapter will prepare us for a future where all democratic elections happen online on Twitter, of course. Our solution will collect and count votes by querying Twitter's streaming API for mentions of specific hash tags, and each component will be capable of horizontally scaling to meet demand. Our use case is a fun and interesting one, but the core concepts we'll learn and the specific technology choices we'll make are the real focus of this chapter. The ideas discussed here are directly applicable to any system that needs true-scale capabilities.
+
+- Horizontal scaling refers to adding nodes, such as physical machines, to a system in order to improve its availability, performance, and/or capacity. Big data companies such as Google can scale by adding affordable and easy-to-obtain hardware (commonly referred to as commodity hardware) due to the way they write their software and architect their solutions.
+
+- Vertical scaling is synonymous to increasing the resource available to a single node, such as adding additional RAM to a box or a processor with more cores.
+
+=== Subject
+
+- Learn about distributed NoSQL datastores, specifically how to interact with MongoDB
+- Learn about distributed messaging queues, in our case, Bit.ly's NSQ and how to use the go-nsq package to easily publish and subscribe to events
+- Stream live tweet data through Twitter's streaming APIs and manage long running net connections
+- Learn how to properly stop programs with many internal goroutines
+- Learn how to use low memory channels for signaling
+
+==== The database design
+
+[source,json]
+----
+{
+  "_id": "???",
+  "title": "Poll title",
+  "options": ["one", "two", "three"],
+  "results": {
+    "one": 100,
+    "two": 200,
+    "three": 300
+  }
+}
+----
+
+
+==== Introducing NSQ
+
+In most cases, services such as mongod and nsqd will have to be started before we can run our programs. Since we are writing components of a distributed system, we will have to run each program at the same time, which is as simple as opening many terminal windows.
+
+NSQ is a messaging queue that allows one program to send messages or events to another or to many other programs running either locally on the same machine or on different nodes connected by a network. NSQ guarantees the delivery of each message at least once, which means that it keeps undelivered messages cached until all interested parties have received them. This means that even if we stop our counter program, we won't miss any votes. You can contrast this capability with fire-and-forget message queues, where information is deemed out of date, and is, therefore, forgotten if it isn't delivered in time and when the sender of the messages doesn't care whether the consumer received them or not.
+
+NSQ transfers raw bytes, which means that it is up to us how we encode data into these bytes. For example, we could encode the data as JSON or in a binary format depending on our needs. In our case, we are going to send the vote option as a string without any additional encoding, since we are only sharing a single data field.
+
+
+- Open http://nsq.io/deployment/installing.html in a browser (or search install nsq) and follow the instructions for your environment. You can either download precompiled binaries or build your own from the source. If you have homebrew installed, installing NSQ is as simple as typing the following:
+
+    brew install nsq
+
+- Once you have installed NSQ, you will need to add the bin folder to your PATH environment variable so that the tools are available in a terminal.
+
+- To validate that NSQ is properly installed, open a terminal and run *nsqlookupd*; if the program successfully starts, you should see output similar to the following:
+
+    nsqlookupd v0.2.27 (built w/go1.3)
+    TCP: listening on [::]:4160
+    HTTP: listening on [::]:4161
+
+We are going to use the default ports to interact with NSQ, so take note of the TCP and HTTP ports listed in the output, as we will be referring to them in our code.
+
+- Press Ctrl + C to stop the process for now; we'll start them properly later.
+
+The key tools from the NSQ installation that we are going to use are nsqlookupd and nsqd. The nsqlookupd program is a daemon that manages topology information about the distributed NSQ environment; it keeps track of all the nsqd producers for specific topics and provides interfaces for clients to query such information. The nsqd program is a daemon that does the heavy lifting for NSQ, such as receiving, queuing, and delivering messages from and to interested parties.
+
+
+==== NSQ driver for Go
+
+    go get github.com/bitly/go-nsq
+
+
+==== MongoDB driver for Go
+
+    go get gopkg.in/mgo.v2
+
+
+=== Starting the environment
+
+- Start nsqlookupd so that our nsqd instances are discoverable
+- Start nsqd and tell it which nsqlookupd to use
+- Start mongod for data services
+
+In a terminal window, run the following:
+
+   nsqlookupd
+
+   nsqd --lookupd-tcp-address=localhost:4160
+
+Make sure the port number in the --lookupd-tcp-address flag matches the TCP port of the nsqlookupd instance. Once you start nsqd, you will notice some output printed to the terminal from both nsqlookupd and nsqd; this indicates that the two processes are talking to each other.
+
+    mongod --dbpath ./db
+
+The dbpath flag tells MongoDB where to store the data files for our database. You can pick any location you like, but you'll have to make sure the folder exists before mongod will run.
+
+By deleting the dbpath folder at any time, you can effectively erase all data and start afresh. This is especially useful during development.
+
+
+=== Reading votes from Twitter
+
+- Head over to https://apps.twitter.com and create a new app called something like SocialPoll (the names have to be unique, so you can have some fun here; the choice of name doesn't affect the code either way).
+
+
+- SP_TWITTER_KEY
+
+====
+5mlzNO5z7pHbjvM9tVUgK7tFk
+====
+
+- SP_TWITTER_SECRET
+
+====
+svjfHY90tQ9DC2DHTWCwDMGZAixyzVPouZ2TM8ztx6RMiY5Ake
+====
+
+- BEARER_TOKEN
+
+====
+AAAAAAAAAAAAAAAAAAAAAEbuSAEAAAAA6F8p8UCC7o%2BZ2YXpHa86mipzNNc%3DMeuGJyqrWbl8krNky7EL5BonqlJaoAlovcS9JquOelFxgklz1u
+====
+
+- SP_TWITTER_ACCESSTOKEN
+====
+1411195257262198788-vfBBQmpuGtBHaipwRqcN5Toqd2qfLw
+====
+
+- SP_TWITTER_ACCESSSECRET
+====
+489pQJ58C71jOBBKmo1ZDRBvWMYjmzzVi7H0m2YKEWtkk
+====
+
+=== Extracting the connection
+
+The Twitter streaming API supports HTTP connections that stay open for a long time, and given the design of our solution, we are going to need to access the net.Conn object in order to close it from outside of the goroutine in which requests occur. We can achieve this by providing our own dial method to an http.Transport object that we will create.
+
+
+=== Testing Twitter Poll
+
+-To make sure our program works, we need to do two things: first, we need to create a poll in the database, and second, we need to peer inside the messaging queue to see whether the messages are indeed being generated by twittervotes.
+
+- In a terminal, run the mongo command to open a database shell that allows us to interact with MongoDB. Then, enter the following commands to add a test poll:
+
+    > use ballots
+    switched to db ballots
+> db.polls.insert({"title":"Test poll","options":
+     ["happy","sad","fail","win"]})
+
+The preceding commands add a new item to the polls collection in the ballots database. We are using some common words for options that are likely to be mentioned by people on Twitter so that we can observe real tweets being translated into messages. You might notice that our poll object is missing the results field; this is fine since we are dealing with unstructured data where documents do not have to adhere to a strict schema. The counter program we are going to write in the next section will add and maintain the results data for us later.
+
+Press Ctrl + C to exit the MongoDB shell and type the following command:
+
+    nsq_tail --topic="votes" --lookupd-http-address=localhost:4160
+
+The nsq_tail tool connects to the specified messaging queue topic and outputs any messages that it notices. This is where we will validate that our twittervotes program is sending messages.
+
+In a separate terminal window, let's build and run the twittervotes program:
+
+    go build -o twittervotes
+
+    ./twittervotes

@@ -1,0 +1,274 @@
+
+DB PROD :
+mongodb://foodorering:mt1oOfL3ks72SJPxTbOhpYhx8y@54.169.72.219:27017/foodorering?authSource=foodorering
+
+DB STAGGING :
+
+
+#connect to mongo server from shell
+
+mongo  mongodb://foodorering:mt1oOfL3ks72SJPxTbOhpYhx8y@54.169.72.219:27017/foodorering?authSource=foodorering
+
+
+----------------------------------------------------------------------------------------------------------------
+
+
+Backup / Dump
+=============
+
+cd /Users/jonny/WORK_DEV/ServD/prod_db/dump/
+
+mongodump --uri="mongodb://foodorering:mt1oOfL3ks72SJPxTbOhpYhx8y@54.169.72.219:27017/foodorering?authSource=foodorering"
+
+mongodump --uri="mongodb://mondoadmin:vly9cuQuWdhE@18.139.178.28:27017/food_ordering_system?authSource=admin"
+
+mongodump --uri="mongodb://mondoadmin:vly9cuQuWdhE@13.229.101.223:27017/food_ordering_system?authSource=admin"
+
+Restore
+=======
+
+#start server
+
+mongod
+
+
+# Creating  First User (If haven't have the admin)
+db.createUser(
+  {
+    user: "root",
+    pwd: "password",
+    roles: [ { role: "userAdminAnyDatabase", db: "admin" },
+             { role : "restore", db : "admin"  },
+             { role : "backup", db : "admin"  }]
+  }
+)
+
+
+#For update role (can skip if in above the first user already grant the backup and restore role)
+db.updateUser( "root",
+  { roles : [
+    { role : "restore", db : "admin"  },
+    { role : "backup", db : "admin"  }
+  ] } )
+
+
+
+use admin
+
+db.createUser(
+  {
+    user: "mondoadmin",
+    pwd: "vly9cuQuWdhE",
+    roles: [ { role: "userAdminAnyDatabase", db: "admin" } ]
+  }
+)
+
+#start server using auth
+
+mongod --auth
+
+try login
+db.auth("root","password")
+
+
+db.logout()
+
+exit
+
+--------
+
+Start Restore
+
+
+mongorestore --host localhost:27017 --username root --password password --authenticationDatabase admin  /Users/jonny/WORK_DEV/ServD/uat_db/dump
+
+mongorestore --host 54.179.154.238:27017 --username mondoadmin --password vly9cuQuWdhE --authenticationDatabase admin  /Users/jonny/WORK_DEV/ServD/uat_db/dump
+
+mongorestore --host localhost:27017 --username root --password password --authenticationDatabase admin  /Users/jonny/WORK_DEV/ServD/prod_db/dump
+
+mongorestore --host 13.229.101.223:27017 --username mondoadmin --password vly9cuQuWdhE --authenticationDatabase admin  /Users/jonny/WORK_DEV/ServD/prod_db/dump
+
+mongorestore --host 13.229.101.223:27017 --username mondoadmin --password vly9cuQuWdhE --authenticationDatabase admin  /Users/jonny/WORK_DEV/ServD/uat_db/dump
+
+Check your restored db and create new user for it
+
+# start your local mongo server
+
+mongod --auth
+
+# login to your local mongo
+
+mongo
+
+
+use admin
+
+db.auth("root", "password")
+
+
+#create user for foodorering
+
+use foodorering
+
+
+db.createUser(
+  {
+    user: "servd",
+    pwd: "password",
+    roles: [
+    { role: "readWrite", db: "foodorering" }
+  ]
+  }
+)
+
+
+db.updateUser( "servd",
+  { roles : [
+    { role : "readWrite", db : "foodorering"  }
+  ] } )
+
+
+
+#login using servd user
+
+db.logout("root")
+
+db.auth("servd", "password")
+
+#check colections
+
+show collections
+
+
+
+=======================
+START MONGO REPLICA
+
+mongod --auth --replSet rs0
+mongod --replSet rs0
+
+=======================
+
+
+START JAR
+=========
+
+
+nohup java -jar food-app-merchant-0.0.1-SNAPSHOT.jar customer.log 2>&1 &
+
+nohup java -jar food-app-customer-0.0.1-SNAPSHOT.jar customer.log 2>&1 &
+
+nohup java -jar food-app-admin-0.0.1-SNAPSHOT.jar customer.log 2>&1 &
+
+
+nohup java -jar -Xms512m -Xmx512m food-app-merchant-1.0.0-RELEASE.jar --spring.profiles.active=uat nohup.log 2>&1 &
+
+nohup java -jar -Xms512m -Xmx512m food-app-admin-1.0.0-RELEASE.jar --spring.profiles.active=uat nohup.log 2>&1 &
+
+nohup java -jar -Xms512m -Xmx512m food-app-customer-1.0.0-RELEASE.jar --spring.profiles.active=uat nohup.log 2>&1 &
+
+
+9802
+
+CHECK NGINX
+===========
+cd /usr/share/nginx/
+
+cd /etc/nginx/nginx.conf
+
+log
+/var/log/nginx
+
+sudo systemctl status nginx
+
+sudo service nginx start
+
+
+check port:
+
+netstat -tulpn | grep :80
+
+ps -ef | grep java
+
+
+CHANGE GITLAB
+=============
+git config --global user.name "jonny-asirius"
+
+git config --global user.email "jonny@alphasirius.io"
+
+ssh-keygen -t ed25519 -C "jonny@alphasirius.io"
+
+
+sudo systemctl status mongod
+sudo systemctl restart mongod
+sudo systemctl start mongod
+
+
+STANDALONE REPLICA SET MONGO
+============================
+
+#OPEN mongod.conf
+
+sudo vim /etc/mongod.conf
+
+#COMMENTED OFF SEUCITY FIRST
+
+
+#security:
+#  authorization: enabled
+
+
+#THEN ADDING THIS
+
+replication:
+  replSetName: "rs0"
+
+#RESTART MONGO SERVICE
+
+sudo systemctl restart mongod
+
+#ENTER MONGO SHELL
+
+mongo
+
+#TYPE THIS TO INITATE THE STANDALONE REPLICA
+#IPADDRESS_OF_DATABASE_SERVER = is Database IP
+
+rs.initiate()
+
+cfg = rs.conf()
+cfg.members[0].host = "IPADDRESS_OF_DATABASE_SERVER:27017"
+rs.reconfig(cfg)
+
+#OPEN mongod.conf
+
+sudo vim /etc/mongod.conf
+
+#ENABLING SECURITY BACK
+
+security:
+  authorization: enabled
+
+sudo systemctl restart mongod
+
+
+
+1. Open Project in Android Studio 4.0 or greater version
+2. Toolbar strip on left side there is option Build Variants
+3. Select one of the build version(ending with "Debug") from the drop down menu.
+4. Let android studio completes it's syncing
+5. Go to Build > Build Bundle (s)/Apk(s) > Build Apk(s)
+6. Let Android Studio completing it's build
+7. After 6 step completes, you will see a POP UP at right side pointing to the location where apk is generated
+
+
+
+
+
+ANDROID STUDIO
+==============
+
+storeFile file('../keystore/keystore_foodapp.jks')
+
+sdk.dir=/Users/jonny/Library/Android/sdk
